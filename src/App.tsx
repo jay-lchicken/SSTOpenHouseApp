@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-import backgroundImage from './background.png';
 import sstInfo from './data/sst-info.json';
 import sstProgrammes from './data/sst-programmes.json';
 import sstCcas from './data/sst-ccas.json';
@@ -30,10 +29,8 @@ function App() {
 
   return (
     <div className="app">
-      {/* Background Layer - Edit this section */}
-      <div className="background-layer">
-        <img src={backgroundImage} alt="Background" />
-      </div>
+      {/* Background Layer */}
+      <div className="background-layer" />
       {/* Header */}
       <header className="header">
         <div className="header-content">
@@ -78,26 +75,30 @@ function App() {
               <section className="content-section">
                 <h2>Our Mission</h2>
                 <p>{sstInfo.mission}</p>
-                <h2>Our Vision</h2>
+                <h2 style={{ marginTop: '1.5rem' }}>Our Vision</h2>
                 <p>{sstInfo.vision}</p>
               </section>
               <section className="content-section">
                 <h2>Our Values</h2>
-                <ul>
-                  {sstInfo.values.map((value) => (
-                    <li key={value.name}>
-                      <strong>{value.name}</strong> — {value.description}
-                    </li>
-                  ))}
-                </ul>
+                {sstInfo.values.map((value, index) => (
+                  <div className="value-item" key={value.name}>
+                    <div className="value-icon">{value.name.charAt(0)}</div>
+                    <div className="value-text">
+                      <strong>{value.name}</strong>
+                      <br />
+                      <span>{value.description}</span>
+                    </div>
+                  </div>
+                ))}
               </section>
               <section className="content-section">
                 <h2>Highlights</h2>
-                <ul>
-                  {sstInfo.highlights.map((highlight, index) => (
-                    <li key={index}>{highlight}</li>
-                  ))}
-                </ul>
+                {sstInfo.highlights.map((highlight, index) => (
+                  <div className="highlight-item" key={index}>
+                    <div className="highlight-bullet" />
+                    <span className="highlight-text">{highlight}</span>
+                  </div>
+                ))}
               </section>
             </>
           )}
@@ -111,7 +112,7 @@ function App() {
               <section className="content-section">
                 <h2>Applied Subjects</h2>
                 {sstProgrammes.appliedSubjects.map((subject) => (
-                  <div key={subject.name} style={{ marginBottom: '1.5rem' }}>
+                  <div className="sub-card" key={subject.name}>
                     <h3>{subject.name}</h3>
                     <p>{subject.description}</p>
                     <ul>
@@ -133,7 +134,7 @@ function App() {
               <section className="content-section">
                 <h2>Enrichment Programmes</h2>
                 {sstProgrammes.enrichmentProgrammes.map((prog) => (
-                  <div key={prog.name} style={{ marginBottom: '1rem' }}>
+                  <div className="sub-card" key={prog.name}>
                     <h3>{prog.name}</h3>
                     <p>{prog.description}</p>
                   </div>
@@ -152,7 +153,7 @@ function App() {
                 <section className="content-section" key={category.name}>
                   <h2>{category.name}</h2>
                   {category.ccas.map((cca) => (
-                    <div key={cca.name} style={{ marginBottom: '1rem' }}>
+                    <div className="sub-card" key={cca.name}>
                       <h3>{cca.name}</h3>
                       <p>{cca.description}</p>
                     </div>
@@ -171,16 +172,17 @@ function App() {
               </section>
               <section className="content-section">
                 <h2>DSA Process</h2>
-                <p>{sstAdmissions.dsaProcess.description}</p>
-                <ol>
-                  {sstAdmissions.dsaProcess.steps.map((step) => (
-                    <li key={step.step} style={{ marginBottom: '0.75rem' }}>
+                <p style={{ marginBottom: '1rem' }}>{sstAdmissions.dsaProcess.description}</p>
+                {sstAdmissions.dsaProcess.steps.map((step) => (
+                  <div className="step-card" key={step.step}>
+                    <div className="step-number">{step.step}</div>
+                    <div className="step-content">
                       <strong>{step.title}</strong>
                       <br />
-                      {step.description}
-                    </li>
-                  ))}
-                </ol>
+                      <span style={{ color: '#666' }}>{step.description}</span>
+                    </div>
+                  </div>
+                ))}
               </section>
               <section className="content-section">
                 <h2>DSA Talent Areas</h2>
@@ -240,6 +242,18 @@ function App() {
           )}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-content">
+          <p><strong>{sstInfo.name}</strong></p>
+          <p>{sstContact.address.full}</p>
+          <div className="footer-divider" />
+          <p className="footer-copyright">
+            © 2026 {sstInfo.shortName} Open House. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
