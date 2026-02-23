@@ -1,0 +1,27 @@
+{
+  "address": {
+    "street": "1 Technology Drive",
+    "postalCode": "Singapore 138572",
+    "full": "1 Technology Drive, Singapore 138572"
+  },
+  "phone": "+65 6571 7200",
+  "fax": "+65 6872 4926",
+  "email": "admin@sst.edu.sg",
+  "website": "https://www.sst.edu.sg",
+  "socialMedia": {
+    "facebook": "https://www.facebook.com/saborSST/",
+    "instagram": "https://www.instagram.com/saborSST/",
+    "youtube": "https://www.youtube.com/@SSTSingapore",
+    "linkedin": "https://www.linkedin.com/school/school-of-science-and-technology-singapore/"
+  },
+  "operatingHours": {
+    "schoolDays": "Monday to Friday",
+    "officeHours": "8:00 AM - 5:00 PM",
+    "closedOn": "Weekends and Public Holidays"
+  },
+  "gettingThere": {
+    "nearestMRT": "Dover MRT Station (EW22) or one-north MRT Station (CC23)",
+    "busServices": "Multiple bus services available along Commonwealth Avenue West and Ayer Rajah Expressway",
+    "directions": "SST is located within the one-north business park, near the National University of Singapore (NUS) and Singapore Polytechnic."
+  }
+}

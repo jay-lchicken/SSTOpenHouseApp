@@ -1,0 +1,65 @@
+{
+  "overview": "SST admits students through the Direct School Admission (DSA) exercise. Students who are passionate about science and technology and demonstrate aptitude for applied learning are encouraged to apply.",
+  "eligibility": "Primary 6 students who are Singapore Citizens or Permanent Residents studying in mainstream primary schools.",
+  "dsaProcess": {
+    "description": "The DSA-Sec exercise allows students to seek admission to SST based on their talents and achievements before the PSLE results are released.",
+    "steps": [
+      {
+        "step": 1,
+        "title": "Online Application",
+        "description": "Submit your application through the MOE DSA-Sec portal during the application period (typically May)."
+      },
+      {
+        "step": 2,
+        "title": "Selection Test",
+        "description": "Shortlisted applicants will be invited for a selection process that includes aptitude tests and activities."
+      },
+      {
+        "step": 3,
+        "title": "Interview",
+        "description": "Shortlisted candidates will attend an interview to assess their passion and suitability for SST's programmes."
+      },
+      {
+        "step": 4,
+        "title": "Offer",
+        "description": "Successful applicants will receive a Confirmed Offer (CO) or placed on the Waiting List (WL)."
+      },
+      {
+        "step": 5,
+        "title": "Acceptance",
+        "description": "Students who receive offers exercise their School Preference through the DSA-Sec portal."
+      }
+    ]
+  },
+  "dsaTalentAreas": [
+    "Applied Sciences (Biotechnology / Computing / Design / Electronics)",
+    "Robotics",
+    "Leadership",
+    "Community Service"
+  ],
+  "importantDates": {
+    "note": "Please visit www.sst.edu.sg for the latest admissions dates and details.",
+    "typicalTimeline": [
+      {
+        "period": "May",
+        "event": "DSA-Sec application opens"
+      },
+      {
+        "period": "June - July",
+        "event": "Selection tests and interviews"
+      },
+      {
+        "period": "August - September",
+        "event": "Release of DSA-Sec results"
+      },
+      {
+        "period": "October - November",
+        "event": "School Preference submission"
+      }
+    ]
+  },
+  "schoolFees": {
+    "note": "As a government-aided independent school, SST charges school fees that are different from mainstream government schools. Financial assistance is available for eligible students.",
+    "financialAssistance": "Students from lower-income families can apply for the MOE Financial Assistance Scheme (FAS) or SST's own financial aid programmes."
+  }
+}
