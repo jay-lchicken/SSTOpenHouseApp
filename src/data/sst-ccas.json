@@ -1,0 +1,89 @@
+{
+  "overview": "SST offers a wide range of Co-Curricular Activities (CCAs) that complement the academic curriculum. CCAs provide students with opportunities to develop character, leadership, and teamwork skills.",
+  "categories": [
+    {
+      "name": "Sports & Games",
+      "ccas": [
+        {
+          "name": "Badminton",
+          "description": "Developing skills in badminton through regular training and inter-school competitions."
+        },
+        {
+          "name": "Basketball",
+          "description": "Training in basketball fundamentals, teamwork, and competitive play."
+        },
+        {
+          "name": "Fencing",
+          "description": "Learning the art and sport of fencing, building discipline and quick reflexes."
+        },
+        {
+          "name": "Football",
+          "description": "Developing football skills and sportsmanship through training and matches."
+        },
+        {
+          "name": "Table Tennis",
+          "description": "Building agility and precision through competitive table tennis."
+        },
+        {
+          "name": "Taekwondo",
+          "description": "Practising the Korean martial art of Taekwondo, developing self-discipline and physical fitness."
+        },
+        {
+          "name": "Touch Rugby",
+          "description": "A non-contact version of rugby that builds teamwork and fitness."
+        },
+        {
+          "name": "Volleyball",
+          "description": "Training in volleyball skills and strategies for inter-school competitions."
+        }
+      ]
+    },
+    {
+      "name": "Performing Arts",
+      "ccas": [
+        {
+          "name": "Guitar Ensemble",
+          "description": "Playing guitar in an ensemble setting, performing at school events and public concerts."
+        },
+        {
+          "name": "Show Choir",
+          "description": "Combining choral singing with choreography for dynamic performances."
+        }
+      ]
+    },
+    {
+      "name": "Clubs & Societies",
+      "ccas": [
+        {
+          "name": "Astronomy Club",
+          "description": "Exploring the wonders of the universe through stargazing sessions, telescope usage, and astronomy knowledge."
+        },
+        {
+          "name": "Media Club",
+          "description": "Developing skills in photography, videography, and media production."
+        },
+        {
+          "name": "Robotics@APEX",
+          "description": "Building and programming robots for competitions like the First Lego League (FLL) and VEX Robotics."
+        },
+        {
+          "name": "Singapore Youth Flying Club (SYFC)",
+          "description": "Learning about aviation through aeromodelling, drone flying, and flight simulation."
+        }
+      ]
+    },
+    {
+      "name": "Uniformed Groups",
+      "ccas": [
+        {
+          "name": "National Cadet Corps (NCC) - Land",
+          "description": "A uniformed group that develops cadets into resilient and responsible citizens through military-inspired training."
+        },
+        {
+          "name": "National Police Cadet Corps (NPCC)",
+          "description": "A uniformed group that develops character and leadership through police-related activities and community service."
+        }
+      ]
+    }
+  ]
+}

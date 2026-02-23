@@ -1,0 +1,72 @@
+{
+  "overview": "SST offers a distinctive 4-year programme leading to the GCE O-Level examination. The curriculum integrates applied learning with mainstream subjects, providing students with a unique educational experience that emphasises real-world application of knowledge.",
+  "appliedSubjects": [
+    {
+      "name": "Computing+",
+      "description": "Students learn computational thinking, programming, and app development. The curriculum covers Python, Swift, and web development, equipping students with 21st-century digital skills.",
+      "highlights": [
+        "App development using Swift",
+        "Python programming",
+        "Computational thinking and problem solving",
+        "Web development"
+      ]
+    },
+    {
+      "name": "Biotechnology",
+      "description": "Students explore the fascinating world of biological sciences and its technological applications. Hands-on laboratory experiences bring textbook concepts to life.",
+      "highlights": [
+        "Molecular biology techniques",
+        "Microbiology experiments",
+        "Bioinformatics",
+        "Real-world biotech applications"
+      ]
+    },
+    {
+      "name": "Design Studies",
+      "description": "Students develop creative thinking and design skills through human-centred design processes. They learn to identify problems and create innovative solutions.",
+      "highlights": [
+        "Human-centred design",
+        "Prototyping and 3D modelling",
+        "User experience (UX) design",
+        "Product design and innovation"
+      ]
+    },
+    {
+      "name": "Electronics",
+      "description": "Students gain hands-on experience with electronic circuits, microcontrollers, and embedded systems. They learn to design and build electronic solutions for real-world problems.",
+      "highlights": [
+        "Circuit design and analysis",
+        "Microcontroller programming (Arduino)",
+        "Embedded systems",
+        "IoT (Internet of Things) projects"
+      ]
+    }
+  ],
+  "coreSubjects": [
+    "English Language",
+    "Mother Tongue Language",
+    "Mathematics",
+    "Additional Mathematics",
+    "Science (Physics)",
+    "Science (Chemistry)",
+    "Humanities (Social Studies, Geography/History)"
+  ],
+  "enrichmentProgrammes": [
+    {
+      "name": "Innovation Programme (IvP)",
+      "description": "A platform for students to identify real-world problems and develop innovative solutions through the design thinking process."
+    },
+    {
+      "name": "Student-Initiated Learning (SIL)",
+      "description": "Dedicated time for students to pursue their passions and interests in self-directed learning projects."
+    },
+    {
+      "name": "STEM Research Programme",
+      "description": "Opportunities for students to engage in authentic research projects mentored by university researchers and industry professionals."
+    },
+    {
+      "name": "Overseas Learning Trips",
+      "description": "Immersive learning experiences abroad to broaden students' perspectives and develop global awareness."
+    }
+  ]
+}

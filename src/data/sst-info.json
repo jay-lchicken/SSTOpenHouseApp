@@ -1,0 +1,45 @@
+{
+  "name": "School of Science and Technology, Singapore",
+  "shortName": "SST",
+  "website": "https://www.sst.edu.sg",
+  "established": 2010,
+  "type": "Specialised Independent School",
+  "motto": "Learn for Life, Create to Serve",
+  "description": "The School of Science and Technology, Singapore (SST) is Singapore's first specialised independent school that offers a distinctive applied learning programme. SST integrates Science, Technology, Engineering, Arts and Mathematics (STEAM) into its curriculum, nurturing future-ready students who are passionate about innovation and making a difference.",
+  "mission": "To nurture passionate innovators who learn for life and create to serve, through a distinctive applied learning programme in science and technology.",
+  "vision": "A world-class applied learning institution, inspiring innovation and empowering change-makers.",
+  "values": [
+    {
+      "name": "Responsibility",
+      "description": "Taking ownership of our learning and actions"
+    },
+    {
+      "name": "Integrity",
+      "description": "Being honest and upholding strong moral principles"
+    },
+    {
+      "name": "Compassion",
+      "description": "Showing care and empathy for others"
+    },
+    {
+      "name": "Excellence",
+      "description": "Striving to be the best in all we do"
+    }
+  ],
+  "keyFacts": {
+    "studentEnrolment": "Approximately 1,000 students",
+    "levels": "Secondary 1 to 4",
+    "curriculum": "GCE O-Level with Applied Subjects",
+    "specialisation": "Applied learning in Science and Technology",
+    "affiliatedSchool": "Singapore University of Technology and Design (SUTD)"
+  },
+  "highlights": [
+    "Singapore's first specialised independent school for applied learning",
+    "Strong partnership with Singapore University of Technology and Design (SUTD)",
+    "Integrated STEAM (Science, Technology, Engineering, Arts, Mathematics) curriculum",
+    "Every student uses a MacBook for learning",
+    "Purpose-built campus with state-of-the-art facilities",
+    "Project-based and problem-based learning approach",
+    "Strong emphasis on innovation and entrepreneurship"
+  ]
+}
