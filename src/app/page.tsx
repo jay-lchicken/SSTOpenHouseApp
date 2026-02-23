@@ -1,9 +1,9 @@
-import React from 'react';
-import './App.css';
+'use client';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
 
-function App() {
+export default function Home() {
   return (
     <div className="app-domain">
       <header>
@@ -19,4 +19,3 @@ function App() {
   );
 }
 
-export default App;
