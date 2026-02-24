@@ -657,26 +657,31 @@ body:has(.popup-overlay) {
 }
 
 .event-card {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.6); */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  /* border-radius: 20px; */
+  /* border: 1px solid rgba(255, 255, 255, 0.5); */
   padding: 20px;
   transition: all 0.4s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 1px rgb(0, 0, 0, 0.3);
 }
 
 .event-card:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.6); */
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
 .event-card.expanded {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.3);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
@@ -726,6 +731,12 @@ body:has(.popup-overlay) {
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;
+  overflow: hidden;
+}
+.event-image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .event-image-placeholder p {

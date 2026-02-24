@@ -16,6 +16,7 @@ interface Booth {
   name: string;
   venue: string;
   description: string;
+  image: string;
 }
 
 interface EventCardProps {
@@ -31,7 +32,7 @@ function EventCard({ booth }: EventCardProps) {
       onClick={() => setIsExpanded(!isExpanded)}
     >
       <div className="event-image-placeholder">
-        <p>Image placeholder</p>
+        <img src={booth.image} alt="" />
       </div>
       <h3 className="event-title">{booth.name}</h3>
       <p className="event-location">
@@ -64,6 +65,18 @@ export default function Home() {
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentTime, setCurrentTime] = useState('1040');
+  const [carouselScrollState, setCarouselScrollState] = useState({
+    hasPrev: false,
+    hasNext: true,
+  });
+
+  const handleCarouselScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    const isAtStart = target.scrollLeft <= 0;
+    const isAtEnd =
+      target.scrollLeft + target.clientWidth >= target.scrollWidth - 1;
+    setCarouselScrollState({ hasPrev: !isAtStart, hasNext: !isAtEnd });
+  };
 
   const parseTime = (timeStr: string): number => {
     const hour = parseInt(timeStr.slice(0, 2));
