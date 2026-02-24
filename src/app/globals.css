@@ -549,6 +549,47 @@ header::before {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.search-bar-container {
+  position: relative;
+  padding: 0 25px 15px 25px;
+  z-index: 3;
+  flex-shrink: 0;
+}
+
+.search-icon {
+  position: absolute;
+  left: 40px;
+  top: 38%;
+  transform: translateY(-50%);
+  color: #1a1a1a;
+  opacity: 0.5;
+  font-size: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 20px 14px 45px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 27px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: rgba(26, 26, 26, 0.5);
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 .popup-body {
   padding: 15px 25px 25px 25px;
   overflow-y: auto;
