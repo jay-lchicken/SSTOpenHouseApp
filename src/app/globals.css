@@ -114,6 +114,92 @@ header {
   position: relative;
   z-index: 2;
 }
+
+/* Header Expandable Styles */
+header.header-expandable {
+  position: relative;
+  z-index: 100;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header.header-expandable.expanded {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  margin: 0;
+  z-index: 1000;
+  border-radius: 35px;
+  overflow: auto;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+body:has(header.header-expandable.expanded) {
+  overflow: hidden;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  z-index: 101;
+}
+
+.header-expanded-content {
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  padding: 15px;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+}
+
+header.header-expandable.expanded .header-expanded-content {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.map-content {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-content h3 {
+  margin: 0 0 20px 0;
+  color: #1a1a1a;
+  font-size: 24px;
+}
+
+.map-placeholder {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.map-placeholder p {
+  color: #1a1a1a;
+  opacity: 0.7;
+  font-size: 18px;
+}
 header::before {
   content: '';
   position: absolute;
@@ -128,6 +214,7 @@ header::before {
   );
   border-radius: 35px 35px 0 0;
   pointer-events: none;
+  z-index: 2;
 }
 .header-button {
   padding: 8px 12px;

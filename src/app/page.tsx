@@ -1,20 +1,38 @@
 'use client';
 
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapLocationDot,
   faArrowRight,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
+
   return (
     <div className="app-domain">
-      <header className="capsule-body">
-        <h2>Open House '26</h2>
-        <div className="buttons">
-          <button className="header-button">
-            <FontAwesomeIcon icon={faMapLocationDot} />
+      <header
+        className={`capsule-body header-expandable ${isHeaderExpanded ? 'expanded' : ''}`}
+      >
+        <div className="header-top">
+          <h2>Open House '26</h2>
+          <button
+            className="header-button"
+            onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
+          >
+            <FontAwesomeIcon
+              icon={isHeaderExpanded ? faXmark : faMapLocationDot}
+            />
           </button>
+        </div>
+        <div className="header-expanded-content">
+          <div className="map-content">
+            <div className="map-placeholder">
+              <p>Interactive map coming soon...</p>
+            </div>
+          </div>
         </div>
       </header>
       <main>
