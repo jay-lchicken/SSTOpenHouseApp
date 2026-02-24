@@ -38,7 +38,7 @@ export default function Home() {
       <main>
         <div className="carousel-wrapper">
           <button className="carousel-button">
-            <h3>Events</h3>
+            <h3>All Events</h3>
             <FontAwesomeIcon icon={faArrowRight} />
           </button>
           <div className="capsule-body carousel">
@@ -65,15 +65,15 @@ export default function Home() {
         </div>
         <div className="quicklook-wrapper">
           <button className="schedule-button">
-            <h3>Full Schedule</h3>
+            <h3>See Schedule</h3>
             <FontAwesomeIcon icon={faArrowRight} />
           </button>
           <div className="capsule-body schdl-quick-look">
             <div className="schdl-title">
-              <h3>Quicklook Schedule</h3>
+              <h3>Q.Look Schedule</h3>
             </div>
             <div className="capsule-body current-program">
-              <h4>Current Program: 9:30am-10am Talk By Principal Nick Chan</h4>
+              <h4>Ongoing: Talk By Principal Nick Chan</h4>
               <h4>Location: Block A Level 5 Auditorium</h4>
             </div>
             <div className="timeline">

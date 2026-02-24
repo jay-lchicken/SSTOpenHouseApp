@@ -300,6 +300,125 @@ header::before {
   position: relative;
   margin: 15px;
 }
+
+/* Carousel Expandable Styles - Like Header */
+.carousel-wrapper {
+  position: relative;
+  z-index: 100;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-wrapper.expanded {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  margin: 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.carousel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  z-index: 101;
+  position: relative;
+}
+
+.carousel-top .carousel {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.carousel-top .carousel-button {
+  position: relative;
+  top: 0;
+  right: 0;
+}
+
+.carousel-expanded-content {
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  padding: 15px;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.carousel-wrapper.expanded .carousel-expanded-content {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+body:has(.carousel-wrapper.expanded) {
+  overflow: hidden;
+}
+
+.events-content {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  padding: 25px;
+}
+
+.events-placeholder {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.events-placeholder p {
+  color: #1a1a1a;
+  opacity: 0.7;
+  font-size: 18px;
+}
+
+/* Expanded state styles for liquid glass effect */
+.carousel-wrapper.expanded .carousel-top {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  padding: 15px 25px;
+  margin-bottom: 15px;
+}
+
+.carousel-wrapper.expanded .carousel-top .capsule-body {
+  margin: 0;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+.carousel-wrapper.expanded .carousel-top .carousel-button {
+  margin-left: 10px;
+}
 .quicklook-wrapper {
   position: relative;
   margin: 15px;
