@@ -461,7 +461,8 @@ header::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.15);
+  /* background: rgba(0, 0, 0, 0.15); */
+  /* background: rgba(255, 255, 255, 0.1); */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   display: flex;
@@ -638,7 +639,7 @@ body:has(.popup-overlay) {
 }
 
 .event-card {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -732,57 +733,58 @@ body:has(.popup-overlay) {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: center;
 }
 
 .popup-timeline-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: 15px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.144);
   border-radius: 8px;
-  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  border-left: 3px solid rgba(255, 255, 255, 0.5);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .popup-timeline-item:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-left: 3px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .popup-timeline-time {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #1a1a1a;
   min-width: 60px;
-  opacity: 0.7;
+  opacity: 1;
   margin: 0;
 }
 
 .popup-timeline-content {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 10px;
   flex: 1;
 }
 
 .popup-timeline-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
+  background: transparent;
   flex-shrink: 0;
-  display: inline-block;
-  margin-right: 8px;
 }
 
 .popup-timeline-event {
-  font-size: 14px;
+  font-size: 15px;
   color: #1a1a1a;
-  opacity: 0.9;
+  opacity: 1;
   font-weight: 600;
   margin: 0;
-  display: flex;
-  align-items: center;
+  flex: 1;
 }
 
 .popup-timeline-venue {
@@ -790,11 +792,22 @@ body:has(.popup-overlay) {
   align-items: center;
   gap: 6px;
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #1a1a1a;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .popup-timeline-venue svg {
-  font-size: 12px;
+  font-size: 13px;
+}
+
+.popup-timeline-item.active {
+  background: rgba(255, 255, 255, 1);
+  border-left: 3px solid rgba(255, 255, 255, 0.9);
+  padding-block: 20px;
+}
+
+.popup-timeline-item.active .popup-timeline-dot {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }

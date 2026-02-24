@@ -63,6 +63,24 @@ export default function Home() {
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentTime, setCurrentTime] = useState('0940');
+
+  const parseTime = (timeStr: string): number => {
+    const hour = parseInt(timeStr.slice(0, 2));
+    const minute = parseInt(timeStr.slice(2));
+    return hour * 60 + minute;
+  };
+
+  const currentTimeMinutes = parseTime(currentTime);
+
+  let activeIndex = schedule.reduce((lastIndex, item, index) => {
+    const itemTime = parseTime(item.time);
+    return itemTime <= currentTimeMinutes ? index : lastIndex;
+  }, 0);
+
+  if (activeIndex === -1) activeIndex = 0;
+
+  const upcomingEvents = schedule.slice(activeIndex, activeIndex + 5);
 
   const filteredBooths = booths.filter(
     (booth) =>
@@ -138,47 +156,24 @@ export default function Home() {
               <h3>Q.Look Schedule</h3>
             </div>
             <div className="capsule-body current-program">
-              <h4>Ongoing: Talk By Principal Nick Chan</h4>
-              <h4>Location: Block A Level 5 Auditorium</h4>
+              <h4>Ongoing: {upcomingEvents[0]?.event || 'No events'}</h4>
+              {upcomingEvents[0]?.venue && (
+                <h4>Location: {upcomingEvents[0].venue}</h4>
+              )}
             </div>
             <div className="timeline">
-              <div className="timeline-item">
-                <h4 className="timeline-time">9:00am</h4>
-                <div className="timeline-content">
-                  <div className="timeline-dot"></div>
-                  <h4 className="timeline-event">Registration Opens</h4>
+              {upcomingEvents.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`timeline-item ${index === 0 ? 'active' : ''}`}
+                >
+                  <h4 className="timeline-time">{formatTime(item.time)}</h4>
+                  <div className="timeline-content">
+                    <div className="timeline-dot"></div>
+                    <h4 className="timeline-event">{item.event}</h4>
+                  </div>
                 </div>
-              </div>
-              <div className="timeline-item active">
-                <h4 className="timeline-time">9:30am</h4>
-                <div className="timeline-content">
-                  <div className="timeline-dot"></div>
-                  <h4 className="timeline-event">
-                    Talk By Principal Nick Chan
-                  </h4>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <h4 className="timeline-time">10:00am</h4>
-                <div className="timeline-content">
-                  <div className="timeline-dot"></div>
-                  <h4 className="timeline-event">School Tour</h4>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <h4 className="timeline-time">11:00am</h4>
-                <div className="timeline-content">
-                  <div className="timeline-dot"></div>
-                  <h4 className="timeline-event">Lab Demonstrations</h4>
-                </div>
-              </div>
-              <div className="timeline-item">
-                <h4 className="timeline-time">12:00pm</h4>
-                <div className="timeline-content">
-                  <div className="timeline-dot"></div>
-                  <h4 className="timeline-event">Lunch Break</h4>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -235,21 +230,24 @@ export default function Home() {
             </div>
             <div className="popup-body">
               <div className="popup-timeline">
-                {schedule.map((item) => (
-                  <div key={item.id} className="popup-timeline-item">
+                {schedule.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className={`popup-timeline-item ${index === activeIndex ? 'active' : ''}`}
+                  >
                     <h4 className="popup-timeline-time">
                       {formatTime(item.time)}
                     </h4>
                     <div className="popup-timeline-content">
                       <div className="popup-timeline-dot"></div>
                       <h4 className="popup-timeline-event">{item.event}</h4>
-                      {item.venue && (
-                        <p className="popup-timeline-venue">
-                          <FontAwesomeIcon icon={faMapLocationDot} />
-                          {item.venue}
-                        </p>
-                      )}
                     </div>
+                    {item.venue && (
+                      <p className="popup-timeline-venue">
+                        <FontAwesomeIcon icon={faMapLocationDot} />
+                        {item.venue}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
