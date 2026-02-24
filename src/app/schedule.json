@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "time": "0900",
+    "event": "Open House starts",
+    "venue": ""
+  },
+  {
+    "id": 2,
+    "time": "0930",
+    "event": "Academic Panel",
+    "venue": "Auditorium"
+  },
+  {
+    "id": 3,
+    "time": "0945",
+    "event": "Student Life Panel",
+    "venue": "Learning Oasis 2"
+  },
+  {
+    "id": 4,
+    "time": "1000",
+    "event": "PforSSTPanel: Transition from Primary to Secondary Education",
+    "venue": "Learning Oasis 1"
+  },
+  {
+    "id": 5,
+    "time": "1030",
+    "event": "Performance by SST Dance Crew",
+    "venue": "Atrium"
+  },
+  {
+    "id": 6,
+    "time": "1045",
+    "event": "Student Life Panel",
+    "venue": "Learning Oasis 2"
+  },
+  {
+    "id": 7,
+    "time": "1130",
+    "event": "Academic Panel",
+    "venue": "Auditorium"
+  },
+  {
+    "id": 8,
+    "time": "1130",
+    "event": "Performance by SST Show Choir",
+    "venue": "Atrium"
+  },
+  {
+    "id": 9,
+    "time": "1200",
+    "event": "PforSSTPanel: Transition from Primary to Secondary Education",
+    "venue": "Learning Oasis 1"
+  },
+  {
+    "id": 10,
+    "time": "1300",
+    "event": "Open House ends",
+    "venue": ""
+  }
+]

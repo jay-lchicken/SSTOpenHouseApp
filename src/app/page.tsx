@@ -8,6 +8,7 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import booths from './booths.json';
+import schedule from './schedule.json';
 
 interface Booth {
   id: number;
@@ -43,9 +44,23 @@ function EventCard({ booth }: EventCardProps) {
   );
 }
 
+interface ScheduleItem {
+  id: number;
+  time: string;
+  event: string;
+  venue: string;
+}
+
+function formatTime(time: string): string {
+  const hour = time.slice(0, 2);
+  const minute = time.slice(2);
+  return `${hour}:${minute}`;
+}
+
 export default function Home() {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
+  const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
 
   return (
     <div className="app-domain">
@@ -103,7 +118,10 @@ export default function Home() {
           </div>
         </div>
         <div className="quicklook-wrapper">
-          <button className="schedule-button">
+          <button
+            className="schedule-button"
+            onClick={() => setIsSchedulePopupOpen(true)}
+          >
             <h3>See Schedule</h3>
             <FontAwesomeIcon icon={faArrowRight} />
           </button>
@@ -175,6 +193,42 @@ export default function Home() {
               <div className="events-grid">
                 {booths.map((booth) => (
                   <EventCard key={booth.id} booth={booth} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Popup */}
+      {isSchedulePopupOpen && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <div className="popup-header">
+              <h2>Event Schedule</h2>
+              <button
+                className="popup-close-button"
+                onClick={() => setIsSchedulePopupOpen(false)}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+            <div className="popup-body">
+              <div className="popup-timeline">
+                {schedule.map((item) => (
+                  <div key={item.id} className="popup-timeline-item">
+                    <h4 className="popup-timeline-time">{formatTime(item.time)}</h4>
+                    <div className="popup-timeline-content">
+                      <div className="popup-timeline-dot"></div>
+                      <h4 className="popup-timeline-event">{item.event}</h4>
+                      {item.venue && (
+                        <p className="popup-timeline-venue">
+                          <FontAwesomeIcon icon={faMapLocationDot} />
+                          {item.venue}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
