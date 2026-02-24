@@ -52,48 +52,48 @@ export default function Home() {
           </button>
           <div className="capsule-body schdl-quick-look">
             <div className="schdl-title">
-              <h3>One-Look Schedule</h3>
-              <span></span>
+              <h3>Quicklook Schedule</h3>
             </div>
             <div className="capsule-body current-program">
               <h4>Current Program: 9:30am-10am Talk By Principal Nick Chan</h4>
+              <h4>Location: Block A Level 5 Auditorium</h4>
             </div>
             <div className="timeline">
               <div className="timeline-item">
-                <div className="timeline-time">9:00am</div>
+                <h4 className="timeline-time">9:00am</h4>
                 <div className="timeline-content">
                   <div className="timeline-dot"></div>
-                  <div className="timeline-event">Registration Opens</div>
+                  <h4 className="timeline-event">Registration Opens</h4>
                 </div>
               </div>
               <div className="timeline-item active">
-                <div className="timeline-time">9:30am</div>
+                <h4 className="timeline-time">9:30am</h4>
                 <div className="timeline-content">
                   <div className="timeline-dot"></div>
-                  <div className="timeline-event">
+                  <h4 className="timeline-event">
                     Talk By Principal Nick Chan
-                  </div>
+                  </h4>
                 </div>
               </div>
               <div className="timeline-item">
-                <div className="timeline-time">10:00am</div>
+                <h4 className="timeline-time">10:00am</h4>
                 <div className="timeline-content">
                   <div className="timeline-dot"></div>
-                  <div className="timeline-event">School Tour</div>
+                  <h4 className="timeline-event">School Tour</h4>
                 </div>
               </div>
               <div className="timeline-item">
-                <div className="timeline-time">11:00am</div>
+                <h4 className="timeline-time">11:00am</h4>
                 <div className="timeline-content">
                   <div className="timeline-dot"></div>
-                  <div className="timeline-event">Lab Demonstrations</div>
+                  <h4 className="timeline-event">Lab Demonstrations</h4>
                 </div>
               </div>
               <div className="timeline-item">
-                <div className="timeline-time">12:00pm</div>
+                <h4 className="timeline-time">12:00pm</h4>
                 <div className="timeline-content">
                   <div className="timeline-dot"></div>
-                  <div className="timeline-event">Lunch Break</div>
+                  <h4 className="timeline-event">Lunch Break</h4>
                 </div>
               </div>
             </div>
