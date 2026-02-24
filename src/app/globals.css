@@ -364,27 +364,30 @@ header::before {
 }
 .timeline-item {
   display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 .timeline-item.active {
   background: rgba(255, 255, 255, 0.25);
-  border-left: 3px solid rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  padding: 10px 18px;
+  flex-wrap: wrap;
 }
 .timeline-time {
   font-size: 12px;
   font-weight: 600;
   color: #1a1a1a;
-  min-width: 60px;
+  min-width: 50px;
   opacity: 0.7;
 }
 .timeline-item.active .timeline-time {
   opacity: 1;
   font-weight: 700;
+  min-width: auto;
 }
 .timeline-content {
   display: flex;
@@ -412,6 +415,19 @@ header::before {
 .timeline-item.active .timeline-event {
   opacity: 1;
   font-weight: 700;
+  flex: 1;
+}
+.ongoing-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-right: 8px;
+  display: inline-block;
+  flex-shrink: 0;
 }
 .schedule-button {
   position: absolute;
@@ -739,27 +755,26 @@ body:has(.popup-overlay) {
 .popup-timeline-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 15px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.144);
-  border-radius: 8px;
-  border-left: 3px solid rgba(255, 255, 255, 0.5);
+  gap: 12px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
 
 .popup-timeline-item:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .popup-timeline-time {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: #1a1a1a;
-  min-width: 60px;
-  opacity: 1;
+  min-width: 50px;
+  opacity: 0.7;
   margin: 0;
 }
 
@@ -771,18 +786,18 @@ body:has(.popup-overlay) {
 }
 
 .popup-timeline-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.5);
   flex-shrink: 0;
 }
 
 .popup-timeline-event {
-  font-size: 15px;
+  font-size: 14px;
   color: #1a1a1a;
-  opacity: 1;
-  font-weight: 600;
+  opacity: 0.8;
+  font-weight: 500;
   margin: 0;
   flex: 1;
 }
@@ -792,22 +807,47 @@ body:has(.popup-overlay) {
   align-items: center;
   gap: 6px;
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   color: #1a1a1a;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .popup-timeline-venue svg {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .popup-timeline-item.active {
-  background: rgba(255, 255, 255, 1);
-  border-left: 3px solid rgba(255, 255, 255, 0.9);
-  padding-block: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  padding: 12px 20px;
+  flex-wrap: wrap;
+}
+
+.popup-timeline-item.active .popup-timeline-time {
+  opacity: 1;
+  font-weight: 700;
+  min-width: auto;
 }
 
 .popup-timeline-item.active .popup-timeline-dot {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.popup-timeline-item.active .popup-timeline-event {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.popup-ongoing-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-right: 8px;
+  display: inline-block;
+  flex-shrink: 0;
 }

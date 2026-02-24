@@ -155,18 +155,13 @@ export default function Home() {
             <div className="schdl-title">
               <h3>Q.Look Schedule</h3>
             </div>
-            <div className="capsule-body current-program">
-              <h4>Ongoing: {upcomingEvents[0]?.event || 'No events'}</h4>
-              {upcomingEvents[0]?.venue && (
-                <h4>Location: {upcomingEvents[0].venue}</h4>
-              )}
-            </div>
             <div className="timeline">
               {upcomingEvents.map((item, index) => (
                 <div
                   key={item.id}
                   className={`timeline-item ${index === 0 ? 'active' : ''}`}
                 >
+                  {index === 0 && <span className="ongoing-label">Ongoing</span>}
                   <h4 className="timeline-time">{formatTime(item.time)}</h4>
                   <div className="timeline-content">
                     <div className="timeline-dot"></div>
@@ -235,6 +230,7 @@ export default function Home() {
                     key={item.id}
                     className={`popup-timeline-item ${index === activeIndex ? 'active' : ''}`}
                   >
+                    {index === activeIndex && <span className="popup-ongoing-label">Ongoing</span>}
                     <h4 className="popup-timeline-time">
                       {formatTime(item.time)}
                     </h4>
