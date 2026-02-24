@@ -193,8 +193,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <p className="credits">Made by Hong Yu & Leung Yin of S304</p>
       </main>
-
       {isEventsPopupOpen && (
         <div className="popup-overlay">
           <div className="popup-content">
