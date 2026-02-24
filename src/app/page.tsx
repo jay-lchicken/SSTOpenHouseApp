@@ -6,6 +6,7 @@ import {
   faMapLocationDot,
   faArrowRight,
   faXmark,
+  faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import booths from './booths.json';
 import schedule from './schedule.json';
@@ -61,7 +62,14 @@ export default function Home() {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const filteredBooths = booths.filter(
+    (booth) =>
+      booth.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      booth.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      booth.description.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
   return (
     <div className="app-domain">
       <header
@@ -176,11 +184,10 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Events Popup */}
       {isEventsPopupOpen && (
         <div className="popup-overlay">
           <div className="popup-content">
-            <div className="popup-header">
+            <div className="popup-header mx">
               <h2>Booths & Programmes</h2>
               <button
                 className="popup-close-button"
@@ -189,9 +196,22 @@ export default function Home() {
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
+            <div className="search-bar-container">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="search-icon"
+              />
+              <input
+                type="text"
+                placeholder="Search events..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+            </div>
             <div className="popup-body">
               <div className="events-grid">
-                {booths.map((booth) => (
+                {filteredBooths.map((booth) => (
                   <EventCard key={booth.id} booth={booth} />
                 ))}
               </div>
@@ -217,7 +237,9 @@ export default function Home() {
               <div className="popup-timeline">
                 {schedule.map((item) => (
                   <div key={item.id} className="popup-timeline-item">
-                    <h4 className="popup-timeline-time">{formatTime(item.time)}</h4>
+                    <h4 className="popup-timeline-time">
+                      {formatTime(item.time)}
+                    </h4>
                     <div className="popup-timeline-content">
                       <div className="popup-timeline-dot"></div>
                       <h4 className="popup-timeline-event">{item.event}</h4>
