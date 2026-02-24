@@ -166,7 +166,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Events Popup */}
       {isEventsPopupOpen && (
         <div className="popup-overlay">
           <div className="popup-content">
