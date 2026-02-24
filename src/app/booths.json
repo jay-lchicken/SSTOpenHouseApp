@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "name": "DSA Booth",
+    "venue": "Infohub Lvl 5",
+    "description": "Please approach us here if you have any questions regarding the DSA selection process!"
+  },
+  {
+    "id": 2,
+    "name": "Academic Panel",
+    "venue": "Auditorium",
+    "description": "Join our School Leaders and various academic staff in a conversation to find out more about the SST curriculum and opportunities that students are presented with!"
+  },
+  {
+    "id": 3,
+    "name": "SST Alumni Association",
+    "venue": "MPR3",
+    "description": "Explore the post-secondary experience with our past students! Here, you can speak to our alumni who are at various stages of their post-secondary journey and find out more on how the SST experience has influenced them in the various pathways that they are currently on."
+  },
+  {
+    "id": 4,
+    "name": "PforSST",
+    "venue": "LO1",
+    "description": "Hear about the SST experience from the perspective of a parent! Come and speak to our friendly PforSST members and join our panel discussion where you can gain some insights on various aspects of the school and have some of your questions answered!"
+  },
+  {
+    "id": 5,
+    "name": "Student Life Panel and Exhibition",
+    "venue": "LO2",
+    "description": "Take the chance to speak with and hear from our students as they share their experiences, challenges, and highlights of their student life @ SST."
+  },
+  {
+    "id": 6,
+    "name": "English Dept",
+    "venue": "ADMT Studio",
+    "description": "Ready to embark on an exciting journey through the world of words and ignite your passion for English language and literature? Visit the English Language Department booth at the School of Science and Technology's Open House, our friendly faculty members and student ambassadors will be on hand to answer any questions you may have about our English language programs, curriculum, and extracurricular activities. We look forward to welcoming you with open arms and sharing with you our innovative teaching methods and personalised approach to language learning. See you at the booth!"
+  },
+  {
+    "id": 7,
+    "name": "MTL Dept",
+    "venue": "Maker Lab",
+    "description": "Get ready to dive into the exciting world of language and culture with the Mother Tongue Languages (MTL) Department! We're thrilled to showcase how passions come alive through immersive experiences like MTL Fortnight, where students embark on a journey of cultural workshops, multimedia projects, and fun-filled language enrichment activities. Through collaborative projects and hands-on learning, students not only sharpen their language skills but also gain fresh insights into diverse perspectives and important societal issues. From thrilling cultural immersion trips in the TDP programme to friendly competitions, in-house training, and even real-life exposure through emceeing - there's never a dull moment! Join us and experience language learning like never before!"
+  },
+  {
+    "id": 8,
+    "name": "Physics Hands On",
+    "venue": "Physics Lab 2",
+    "description": "Join our interactive workshop at Physics Lab 2 and learn the art of crafting a functional beam balance. Explore the concept of equilibrium in mechanics as you assemble this classic scientific instrument. Unleash your inner physicist through this hands-on learning experience!"
+  },
+  {
+    "id": 9,
+    "name": "Chemistry Hands On",
+    "venue": "Chem Lab 2",
+    "description": "In SST, Chemistry is taught through Applied Learning with technology integration and varied assessments to understand interactions between matter. 'Innovation with Colours', our booth's theme highlights the significance of colours in chemical reactions. Explore creative and fun hands-on activities and experiments at Chemistry Lab 2. Join us to delve into colourful science!"
+  },
+  {
+    "id": 10,
+    "name": "Biotechnology Hands On",
+    "venue": "Biotech Lab 1",
+    "description": "Ever wondered how science and technology join forces to make the world a better place? Get ready to dive into the fascinating world of biotechnology! In this session, we'll uncover the secrets of genetic engineering and how it helps create genetically modified food. Plus, you won't want to miss our hands-on activity where we'll explore agarose gel electrophoresis together. Join us for an unforgettable journey of discovery and fun!"
+  },
+  {
+    "id": 11,
+    "name": "Electronics Hands On",
+    "venue": "Engineering Lab",
+    "description": "Electronics engineers solve problems and improve lives by applying their knowledge and skills in electronics. Their solutions often come in the form of electronic systems. Join our hands-on activity to experience the work of an electronic engineer! You will learn how a computer simulation is used in circuit design and build an automatic lighting system."
+  },
+  {
+    "id": 12,
+    "name": "Biology Hands On",
+    "venue": "Bio Lab 1",
+    "description": "Biology is an academic discipline that enables us to comprehend the functioning, evolution, and interactions of various organisms within the living world, including humans. Learning from our natural environment, beyond the boundaries of our classroom, we will explore the rich diversity of the world of plants and how they evolved millions of years ago on the very grounds of SST."
+  },
+  {
+    "id": 13,
+    "name": "Environmental Education",
+    "venue": "Physics Lab 1",
+    "description": "The Environmental Education committee is committed to cultivating environmentally conscious leaders who will drive positive change. We encourage students to actively engage in the 3As: Awareness (Understanding their responsibility towards the environment), Action (Taking concrete steps to create a positive environmental impact), and Advocacy (Championing causes that promote sustainability and environmental well-being). Through our environmental programs, we aim to empower students to lead initiatives that benefit the environment and inspire others to do the same. Eco-ambassadors will showcase their learning experiences and demo to visitors on prepping compost and encourage this habit at home."
+  },
+  {
+    "id": 14,
+    "name": "Science Research",
+    "venue": "Research Lab",
+    "description": "The SST Science curriculum is based on the philosophy of education through inquiry, experimentation, and discovery. Students are presented with a variety of learning experiences which pique their curiosity about the natural world and help cultivate habits of mind to be out-of-the-box innovators. The Science curriculum aims to develop students' scientific knowledge and conceptual understanding; and Science process skills through the disciplines of Biology, Chemistry and Physics."
+  },
+  {
+    "id": 15,
+    "name": "IDP",
+    "venue": "ADMT Studio",
+    "description": "The SST-Ngee Ann Polytechnic Integrated Diploma Programme (SST-NP IDP) offers a first-of-its-kind STEAM (Science, Technology, Engineering, Aesthetics, and Mathematics) - related through-train programme, providing Secondary Three students with a direct pathway to NP. This programme emphasises applied learning and engages students in a wide range of STEM fields via capstone projects with start-ups, industry partners and the community. Furthermore, students gain valuable 21st century skills, becoming innovative problem solvers and active contributors to society."
+  },
+  {
+    "id": 16,
+    "name": "Mathematics Dept",
+    "venue": "ADMT Studio",
+    "description": "The SST Mathematics Programme strives to foster a love for Mathematics through a dynamic and innovative approach that emphasises applied and integrated learning. Real-world scenarios are presented as performance tasks, enabling students to apply their problem-solving and mathematical modeling skills. Our concept-focused curriculum is designed to ensure a deep understanding of core mathematical principles. With learner-centered assessments and technology-enabled experiences, students are empowered to explore, reflect, and apply their mathematical knowledge in meaningful ways — fostering both critical and computational thinking skills. The department also places a strong emphasis on cultivating a Mathematical Mindset community. We nurture the belief that all students can succeed in Mathematics, encouraging them to embrace mistakes as opportunities for growth and to approach challenges with resilience. Through self-reflection and productive struggle, students are empowered to take ownership of their learning and to pursue mathematical excellence with confidence. This mindset, coupled with opportunities for talented students through the SST Math Talent Development Programme (TDP), ensures that every learner can excel. The TDP provides students with avenues to explore advanced projects, participate in showcases, and engage in mathematics competitions — further igniting passion and nurturing excellence in the subject. The SST Mathematics Programme aims to not only ensures mastery of mathematical concepts but also prepares students to become critical thinkers and problem-solvers in an ever-evolving, technology-driven world."
+  },
+  {
+    "id": 17,
+    "name": "Humanities Dept",
+    "venue": "ADMT Studio",
+    "description": "Through the lens of Applied Learning, the Humanities curriculum in SST is designed to cultivate a deeper understanding of people, places and modern phenomena by bridging the gap between theoretical knowledge and practical application. Immerse yourselves in the realm of Humanities through source-based inquiry, strategic play and virtual fieldwork at our booth with the theme being, 'Perspectives Unlocked: A Humanities Challenge'"
+  },
+  {
+    "id": 18,
+    "name": "ADMT Dept",
+    "venue": "Maker Lab",
+    "description": "The Arts, Design, Media and Technology (ADMT) programme equip students with principles, knowledge and skills from prototyping to product design to interactive design media, architecture design and video production."
+  },
+  {
+    "id": 19,
+    "name": "Informatics Dept & SST Inc.",
+    "venue": "SST Inc",
+    "description": "The Informatics Department comprises the lower secondary Information and Communication Technology (ICT) and upper secondary Computing+ subjects. Our mission is to inspire and enable our students to use technology as a force for good in the world. Technology has the power to solve some of the most pressing challenges our society faces. Our goal is to cultivate a community of students who are passionate about using their skills and knowledge to make a positive difference in the world. Through hands-on experiential learning and rigorous coursework, we aim to equip our students with the technical expertise and ethical grounding necessary to use technology to benefit humanity. SST Inc. is part of SST's technology talent development programme. It aims to be locally and globally recognised as an incubator that fosters a deep interest in Infocomm Technology among our students and nurtures their app development and entrepreneurship talents to impact their community positively."
+  },
+  {
+    "id": 20,
+    "name": "S&W Dept",
+    "venue": "Outside Maker Lab",
+    "description": "The S&W curriculum is based on the philosophy of education through the physical; a multi-dimensional approach to develop students holistically through sports and games excellence. The curriculum engages students actively with relevant activities that help them learn experientially. Lessons are focused on acquiring games skills for sports recreation, uncovering games concepts for understanding, and promoting sportsmanship and sporting behaviour through authentic sports participation and competition. Students experience physical, mental and social emotional challenges that effectively develop their strength of character. There is also a focus on outdoor education that compels students to develop appropriate outdoor skills and sharpen their coping and management strategies through physical activities while cultivating an attitude of care and appreciation for the environment."
+  },
+  {
+    "id": 21,
+    "name": "ARC@SST",
+    "venue": "Bio Lab 2",
+    "description": "ARC@SST is a new initiative launched this year to support and inspire students with a strong interest in scientific research beyond the classroom. It provides a platform for students to explore real-world scientific questions through hands-on experimentation, guided inquiry, and collaborative projects. Members will develop valuable skills in science communication, critical thinking, and research design. The club also offers opportunities to take part in science competitions and conduct outreach programs at primary schools, aiming to spark curiosity and a love for science in younger students. Through these experiences, students will gain confidence in presenting their ideas and deepen their understanding of the scientific process."
+  },
+  {
+    "id": 22,
+    "name": "Astronomy",
+    "venue": "Atrium",
+    "description": "The Astronomy Club remains a vibrant hub for fostering curiosity and passion among our students through its dynamic and interactive activities. Designed to ignite exploration and deepen knowledge of the cosmos, the club offers training in telescope operation, radio foxhunting, astrophotography, and simulation tools like Kerbal Space Programme. Through engaging sharing sessions, outreach initiatives, and both local and international competitions and trips, students hone their leadership abilities and interpersonal skills. These experiences empower them to become confident, responsible learners and future leaders, ready to navigate the world with curiosity and purpose."
+  },
+  {
+    "id": 23,
+    "name": "Fencing",
+    "venue": "Atrium",
+    "description": "Fencing is more than just a sport—it is a platform for students to develop character, leadership, and sportsmanship. Through rigorous training and competitions, fencers cultivate discipline, resilience, and strategic thinking, essential qualities for both sport and life. Our CCA is committed to raising the standards of every fencer, enhancing their skills, and grooming them into capable and confident sportsmen. With dedicated coaching and structured development programs, we aim to nurture future leaders who exhibit integrity, commitment, and perseverance. Join us and embark on a journey of excellence in both fencing and personal growth!"
+  },
+  {
+    "id": 24,
+    "name": "Robotics",
+    "venue": "Robotics Room",
+    "description": "Founded in 2010 by a group of passionate students, Robotics @APEX has grown into a dynamic club known for its excellence in both local and international robotics competitions. Guided by our core values—Effective, Efficient, and Exemplary—we continuously push boundaries in innovation and teamwork. As a member, you'll explore various robotics systems, including Arduino, LEGO, and VEX, through student-led workshops. You'll also have the opportunity to compete in prestigious competitions like First LEGO League, IDE, NRC, and VEX Robotics, as well as international events such as RoboRAVE Japan and the VEX Robotics World Championship. Beyond competitions, we encourage members to take on passion projects, allowing creativity and problem-solving skills to thrive. Join us and be part of a team that brings ideas to life through robotics!"
+  },
+  {
+    "id": 25,
+    "name": "Show Choir and Dance",
+    "venue": "Atrium",
+    "description": "SST Show Choir and Dance is one CCA family celebrating two unique art forms united by a shared love for the stage. The SST Show Choir blends vocal excellence with dynamic choreography, creating captivating performances that push creative boundaries. Members master the art of singing and dancing in unison, fostering teamwork and artistic growth. Through rigorous training and competitive showcases, students develop showmanship, confidence, and a passion for performance. The SST Dance Crew is a vibrant community of street dancers united by their love for movement and creativity. In a supportive environment, members sharpen their skills, learn discipline, and embrace teamwork. With energetic routines and opportunities to compete and collaborate, the Dance crew inspires growth, self-expression, and a shared passion for excellence, making every performance and competition an electrifying experience."
+  },
+  {
+    "id": 26,
+    "name": "Media Club",
+    "venue": "Atrium",
+    "description": "The Media Club serves as a hub for creative exploration, providing students with plenty of opportunities to hone their skills in photography, videography, audiovisual (AV) production and journalism and chances to participate in workshops and competitions. The AV team's involvement in morning assemblies and coverage of school events demonstrates their commitment to gain practical experience and strive for excellence. In journalism, our members collaborate with students from the English Talent Development Programme for 'SSTraits Times,' fostering diverse perspectives and expertise. Together, they craft compelling narratives that resonate with their audience, enriching both their skills and the school community. The Photo/Video team is passionate about covering the highlights of our school events. The competencies and skills that our Club members develop can be applied in their further endeavours."
+  },
+  {
+    "id": 27,
+    "name": "Athletics",
+    "venue": "Atrium",
+    "description": "Athletics is dedicated to fostering holistic athlete development by providing opportunities for growth, learning, and enjoyment through sports. In addition, students are given the opportunities to nurture their intellectual and interpersonal skills. Our core programmes focus on cultivating leadership skills, both on and off the field, as well as instilling the spirit of sportsmanship through active participation in Inter-schools friendly competitions, National School Games (NSG) Track and Field, and Cross Country. These experiences not only enhance athletes' athletic abilities but also prepare them for future endeavours, equipping them with the skills and character traits necessary for success."
+  },
+  {
+    "id": 28,
+    "name": "SYFC",
+    "venue": "Atrium",
+    "description": "SYFC offers students a unique opportunity to explore aviation. Through engaging programs like aeromodelling, simulator flying, and aviation knowledge courses, students gain hands-on experience and deepen their understanding of flight. The CCA also includes thrilling real-world exposure via joyrides on RSAF aircraft. With courses on aerodynamics, aircraft propulsion systems, and quadcopter flying, participants develop technical skills and knowledge. This CCA inspires future aviators and nurture passionate aviators who aspire to improve society through real-world applications of science and technology."
+  }
+]

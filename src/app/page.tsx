@@ -7,9 +7,45 @@ import {
   faArrowRight,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import booths from './booths.json';
+
+interface Booth {
+  id: number;
+  name: string;
+  venue: string;
+  description: string;
+}
+
+interface EventCardProps {
+  booth: Booth;
+}
+
+function EventCard({ booth }: EventCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div
+      className={`event-card ${isExpanded ? 'expanded' : ''}`}
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      <h3 className="event-title">{booth.name}</h3>
+      <p className="event-location">
+        <FontAwesomeIcon icon={faMapLocationDot} />
+        {booth.venue}
+      </p>
+      <div className="event-details">
+        <div className="event-image-placeholder">
+          <p>Image placeholder</p>
+        </div>
+        <p className="event-description">{booth.description}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
+  const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
 
   return (
     <div className="app-domain">
@@ -37,7 +73,10 @@ export default function Home() {
       </header>
       <main>
         <div className="carousel-wrapper">
-          <button className="carousel-button">
+          <button
+            className="carousel-button"
+            onClick={() => setIsEventsPopupOpen(true)}
+          >
             <h3>All Events</h3>
             <FontAwesomeIcon icon={faArrowRight} />
           </button>
@@ -118,6 +157,30 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Events Popup */}
+      {isEventsPopupOpen && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <div className="popup-header">
+              <h2>Booths & Programmes</h2>
+              <button
+                className="popup-close-button"
+                onClick={() => setIsEventsPopupOpen(false)}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+            <div className="popup-body">
+              <div className="events-grid">
+                {booths.map((booth) => (
+                  <EventCard key={booth.id} booth={booth} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
