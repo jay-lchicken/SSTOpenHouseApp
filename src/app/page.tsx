@@ -30,15 +30,15 @@ function EventCard({ booth }: EventCardProps) {
       className={`event-card ${isExpanded ? 'expanded' : ''}`}
       onClick={() => setIsExpanded(!isExpanded)}
     >
+      <div className="event-image-placeholder">
+        <p>Image placeholder</p>
+      </div>
       <h3 className="event-title">{booth.name}</h3>
       <p className="event-location">
         <FontAwesomeIcon icon={faMapLocationDot} />
         {booth.venue}
       </p>
       <div className="event-details">
-        <div className="event-image-placeholder">
-          <p>Image placeholder</p>
-        </div>
         <p className="event-description">{booth.description}</p>
       </div>
     </div>
@@ -63,7 +63,7 @@ export default function Home() {
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentTime, setCurrentTime] = useState('0940');
+  const [currentTime, setCurrentTime] = useState('1040');
 
   const parseTime = (timeStr: string): number => {
     const hour = parseInt(timeStr.slice(0, 2));
@@ -161,7 +161,9 @@ export default function Home() {
                   key={item.id}
                   className={`timeline-item ${index === 0 ? 'active' : ''}`}
                 >
-                  {index === 0 && <span className="ongoing-label">Ongoing</span>}
+                  {index === 0 && (
+                    <span className="ongoing-label">Ongoing</span>
+                  )}
                   <h4 className="timeline-time">{formatTime(item.time)}</h4>
                   <div className="timeline-content">
                     <div className="timeline-dot"></div>
@@ -230,7 +232,9 @@ export default function Home() {
                     key={item.id}
                     className={`popup-timeline-item ${index === activeIndex ? 'active' : ''}`}
                   >
-                    {index === activeIndex && <span className="popup-ongoing-label">Ongoing</span>}
+                    {index === activeIndex && (
+                      <span className="popup-ongoing-label">Ongoing</span>
+                    )}
                     <h4 className="popup-timeline-time">
                       {formatTime(item.time)}
                     </h4>
