@@ -182,6 +182,12 @@ export default function Home() {
                     <div className="timeline-dot"></div>
                     <h4 className="timeline-event">{item.event}</h4>
                   </div>
+                  {index === 0 && (
+                    <p className="popup-timeline-venue">
+                      <FontAwesomeIcon icon={faMapLocationDot} />
+                      {item.venue}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
