@@ -573,6 +573,9 @@ header::before {
   padding: 0 25px 15px 25px;
   z-index: 3;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-icon {
@@ -586,7 +589,7 @@ header::before {
 }
 
 .search-input {
-  width: 100%;
+  flex: 1;
   padding: 14px 20px 14px 45px;
   font-size: 16px;
   background: rgba(255, 255, 255, 0.2);
@@ -607,6 +610,46 @@ header::before {
   background: rgba(255, 255, 255, 0.35);
   border-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-clear-button {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.4);
+  color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 27px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.1s, transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-clear-wrapper.visible .search-clear-button {
+  opacity: 1;
+}
+
+.search-clear-wrapper.visible .search-clear-button:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-clear-wrapper {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.search-clear-wrapper.visible {
+  width: 46px;
 }
 
 .popup-body {

@@ -219,6 +219,11 @@ export default function Home() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="search-input"
               />
+              <div className={`search-clear-wrapper ${searchQuery ? 'visible' : ''}`}>
+                <button className="search-clear-button" onClick={() => setSearchQuery('')}>
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
+              </div>
             </div>
             <div className="popup-body">
               <div className="events-grid">
