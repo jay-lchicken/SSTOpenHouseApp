@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapLocationDot,
@@ -65,18 +65,18 @@ export default function Home() {
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentTime, setCurrentTime] = useState('1040');
-  const [carouselScrollState, setCarouselScrollState] = useState({
-    hasPrev: false,
-    hasNext: true,
-  });
 
-  const handleCarouselScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    const isAtStart = target.scrollLeft <= 0;
-    const isAtEnd =
-      target.scrollLeft + target.clientWidth >= target.scrollWidth - 1;
-    setCarouselScrollState({ hasPrev: !isAtStart, hasNext: !isAtEnd });
-  };
+  // useEffect(() => {
+  //   const getCurrentTime = () => {
+  //     const now = new Date();
+  //     const hours = now.getHours().toString().padStart(2, '0');
+  //     const minutes = now.getMinutes().toString().padStart(2, '0');
+  //     return hours + minutes;
+  //   };
+  //   setCurrentTime(getCurrentTime());
+  //   const interval = setInterval(() => setCurrentTime(getCurrentTime()), 60000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const parseTime = (timeStr: string): number => {
     const hour = parseInt(timeStr.slice(0, 2));
@@ -219,8 +219,13 @@ export default function Home() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="search-input"
               />
-              <div className={`search-clear-wrapper ${searchQuery ? 'visible' : ''}`}>
-                <button className="search-clear-button" onClick={() => setSearchQuery('')}>
+              <div
+                className={`search-clear-wrapper ${searchQuery ? 'visible' : ''}`}
+              >
+                <button
+                  className="search-clear-button"
+                  onClick={() => setSearchQuery('')}
+                >
                   <FontAwesomeIcon icon={faXmark} />
                 </button>
               </div>
