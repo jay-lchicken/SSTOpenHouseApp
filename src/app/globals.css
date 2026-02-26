@@ -310,7 +310,7 @@ header::before {
 }
 .carousel-button {
   position: absolute;
-  top: -7px;
+  top: -9px;
   right: -1px;
   z-index: 100;
   padding: 10px 15px;
@@ -434,7 +434,7 @@ header::before {
 }
 .schedule-button {
   position: absolute;
-  top: -7px;
+  top: -9px;
   right: -1px;
   z-index: 100;
   padding: 10px 15px;
