@@ -76,6 +76,63 @@ h2 {
   font-weight: 700;
 }
 
+.app-domain.rsvp-page {
+  height: 100%;
+}
+
+.texts {
+  padding: 30px;
+  padding-top: 30vh;
+  padding-inline: 20px;
+  margin: 15px;
+  justify-content: center;
+  align-items: center;
+  /* position: relative; */
+  text-align: center;
+  height: 100%;
+  z-index: 3;
+}
+.but-cont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.texts h3 {
+  margin-top: 1vh;
+}
+.rsvp-button {
+  margin-top: 3vh;
+  padding: 10px 30px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 27px;
+  outline: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+.texts h1 span {
+  font-size: 40px;
+  color: red;
+  box-shadow: 10 10 5 5 rgb(255, 255, 255, 0.7);
+}
+.rsvp-button:hover {
+  background: rgba(255, 0, 0, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+.rsvp-button h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
 .capsule-body {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px) saturate(180%);
