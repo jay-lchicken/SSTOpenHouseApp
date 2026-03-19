@@ -65,6 +65,7 @@ export default function RSVPPage() {
           </h3>
           <form onSubmit={handleRSVP}>
             <input
+                className="rsvp-input"
                 type="email"
                 placeholder="Your email"
                 value={email}

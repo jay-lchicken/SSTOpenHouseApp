@@ -15,11 +15,7 @@
     "events":{
         "ap1": {
             "name": "Academic Panel 1",
-            "time": "10:30am - 11:30am"
-        },
-        "ap2": {
-            "name": "Academic Panel 2",
-            "time": "12:30pm - 1:30pm"
+            "time": "11:30am - 11:30am"
         }
     }
   },

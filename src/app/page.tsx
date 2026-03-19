@@ -17,6 +17,7 @@ interface Booth {
   venue: string;
   description: string;
   image: string;
+  events?: Record<string, { name: string; time: string }>;
 }
 
 interface EventCardProps {
@@ -39,8 +40,30 @@ function EventCard({ booth }: EventCardProps) {
         <FontAwesomeIcon icon={faMapLocationDot} />
         {booth.venue}
       </p>
+      {!isExpanded && (
+          <p className={"ellipsis"}>...</p>
+      )}
       <div className="event-details">
         <p className="event-description">{booth.description}</p>
+        {booth.events && Object.keys(booth.events).length > 0 && (
+          <div className="event-rsvp-list">
+            {Object.entries(booth.events).map(([eventId, event]) => (
+              <div key={eventId} className="event-rsvp-item">
+                <div className="event-rsvp-meta">
+                  <p className="event-rsvp-name">{event.name}</p>
+                  <p className="event-rsvp-time">{event.time}</p>
+                </div>
+                <a
+                  className="event-rsvp-button"
+                  href={`/rsvp/${eventId}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  RSVP
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -51,6 +74,7 @@ interface ScheduleItem {
   time: string;
   event: string;
   venue: string;
+  eventId?: string;
 }
 
 function formatTime(time: string): string {
@@ -276,6 +300,15 @@ export default function Home() {
                         <FontAwesomeIcon icon={faMapLocationDot} />
                         {item.venue}
                       </p>
+                    )}
+                    {item.eventId && (
+                        <a
+                  className="event-rsvp-button"
+                  href={`/rsvp/${item.eventId}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  RSVP
+                </a>
                     )}
                   </div>
                 ))}

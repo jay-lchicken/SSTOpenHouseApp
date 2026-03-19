@@ -3,60 +3,70 @@
     "id": 1,
     "time": "0900",
     "event": "Open House starts",
-    "venue": ""
+    "venue": "",
+    "eventId": ""
   },
   {
     "id": 2,
     "time": "0930",
     "event": "Academic Panel",
-    "venue": "Auditorium"
+    "venue": "Auditorium",
+    "eventId": ""
   },
   {
     "id": 3,
     "time": "0945",
     "event": "Student Life Panel",
-    "venue": "Learning Oasis 2"
+    "venue": "Learning Oasis 2",
+    "eventId": ""
   },
   {
     "id": 4,
     "time": "1000",
     "event": "PforSSTPanel: Transition from Primary to Secondary Education",
-    "venue": "Learning Oasis 1"
+    "venue": "Learning Oasis 1",
+    "eventId": ""
   },
   {
     "id": 5,
     "time": "1030",
     "event": "Performance by SST Dance Crew",
-    "venue": "Atrium"
+    "venue": "Atrium",
+    "eventId": ""
   },
   {
     "id": 6,
     "time": "1045",
     "event": "Student Life Panel",
-    "venue": "Learning Oasis 2"
+    "venue": "Learning Oasis 2",
+    "eventId": ""
   },
   {
     "id": 7,
     "time": "1130",
     "event": "Academic Panel",
-    "venue": "Auditorium"
+    "venue": "Auditorium",
+    "eventId": "ap1"
   },
   {
     "id": 8,
     "time": "1130",
     "event": "Performance by SST Show Choir",
-    "venue": "Atrium"
+    "venue": "Atrium",
+    "eventId": ""
   },
   {
     "id": 9,
     "time": "1200",
     "event": "PforSSTPanel: Transition from Primary to Secondary Education",
-    "venue": "Learning Oasis 1"
+    "venue": "Learning Oasis 1",
+    "eventId": ""
   },
   {
     "id": 10,
     "time": "1300",
     "event": "Open House ends",
-    "venue": ""
+    "venue": "",
+    "eventId": ""
   }
 ]
