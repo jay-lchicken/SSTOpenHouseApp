@@ -1,12 +1,5 @@
-"use client";
-
-import { FormEvent, useMemo, useState } from 'react';
+import RSVPClient from './RSVPClient';
 import booths from '../../booths.json';
-
-interface BoothEvent {
-  name: string;
-  time: string;
-}
 
 interface Booth {
   id: number;
@@ -14,7 +7,7 @@ interface Booth {
   venue: string;
   description: string;
   image: string;
-  events?: Record<string, BoothEvent>;
+  events?: Record<string, { name: string; time: string }>;
 }
 
 function findEvent(eventId: string) {
@@ -30,113 +23,13 @@ function findEvent(eventId: string) {
   return null;
 }
 
-export default function EventRSVPPage({
-  params,
-}: {
-  params: { eventId: string };
-}) {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('idle');
-  const [errorMsg, setErrorMsg] = useState('');
+interface PageProps {
+  params: Promise<{ eventId: string }>;
+}
 
-  const eventInfo = useMemo(
-    () => findEvent(params.eventId),
-    [params.eventId],
-  );
+export default async function Page({ params }: PageProps) {
+  const { eventId } = await params;
+  const eventInfo = findEvent(eventId);
 
-  async function handleRSVP(e: FormEvent) {
-    e.preventDefault();
-    if (!email) {
-      setErrorMsg('Please fill in your email.');
-      setStatus('error');
-      return;
-    }
-
-    setStatus('loading');
-    setErrorMsg('');
-
-    try {
-      const res = await fetch('/api/event-rsvp', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, eventId: params.eventId }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Something went wrong. Please try again.');
-      }
-
-      setStatus('success');
-    } catch (err: any) {
-      if (err && 'message' in err) {
-        setErrorMsg(err.message);
-        setStatus('error');
-      }
-    }
-  }
-
-  if (status === 'success') {
-    return (
-      <div className="app-domain rsvp-page">
-        <div className="texts">
-          <h1>You're in!</h1>
-          <h3>We've received your RSVP. See you at SST Open House 2026!</h3>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="app-domain rsvp-page">
-      <div className="texts">
-        <div className="rsvp-event-card">
-          <p className="rsvp-eyebrow">Event RSVP</p>
-          <h1 className="rsvp-event-title">
-            {eventInfo ? eventInfo?.event.name : 'Event Not Found'}
-          </h1>
-          {eventInfo ? (
-            <div>
-              <div className="rsvp-event-meta">
-              <p className="rsvp-event-time">{eventInfo.event.time}</p>
-              <p className="rsvp-event-venue">
-                {eventInfo.boothName} · {eventInfo.boothVenue}
-              </p>
-            </div>
-              <form className="rsvp-form" onSubmit={handleRSVP}>
-          <input
-            className="rsvp-input"
-            type="email"
-            placeholder="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {status === 'error' && <p>{errorMsg}</p>}
-          <div className="but-cont">
-            <button
-              className="rsvp-button"
-              type="submit"
-              disabled={status === 'loading'}
-            >
-              <h3>{status === 'loading' ? 'Submitting...' : 'RSVP NOW!'}</h3>
-            </button>
-          </div>
-        </form>
-            </div>
-          ) : (
-            <p className="rsvp-event-venue">
-              We could not find this event. You can still RSVP below.
-            </p>
-          )}
-          <a className="rsvp-back-link" href="/">
-            Back to events
-          </a>
-        </div>
-
-      </div>
-    </div>
-  );
+  return <RSVPClient eventId={eventId} eventInfo={eventInfo} />;
 }
