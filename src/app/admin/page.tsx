@@ -1,6 +1,8 @@
 import pool from "@/lib/db";
 
 export default async function RSVPPage() {
+    export const dynamic = "force-dynamic";
+    export const revalidate = 0;
     const RSVPResponses = await pool.query("SELECT email FROM openhouse_rsvp");
     const emails = RSVPResponses.rows.map(row => row.email);
     console.log("RSVP Emails:", emails);
