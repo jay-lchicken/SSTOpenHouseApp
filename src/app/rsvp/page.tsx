@@ -50,8 +50,7 @@ export default function RSVPPage() {
 
   const visibleQuestions = getVisibleQuestions();
   const visibleCurrentQuestion = visibleQuestions[currentQuestionIndex];
-  const isLastQuestion =
-    currentQuestionIndex === visibleQuestions.length - 1;
+  const isLastQuestion = currentQuestionIndex === visibleQuestions.length - 1;
   const isFirstQuestion = currentQuestionIndex === 0;
 
   function handleAnswer(questionId: string, value: string | string[]) {
@@ -59,7 +58,10 @@ export default function RSVPPage() {
   }
 
   function handleNext() {
-    if (visibleCurrentQuestion?.required && !answers[visibleCurrentQuestion.id]) {
+    if (
+      visibleCurrentQuestion?.required &&
+      !answers[visibleCurrentQuestion.id]
+    ) {
       setErrorMsg('This field is required.');
       return;
     }
@@ -125,6 +127,7 @@ export default function RSVPPage() {
       case 'email':
         return (
           <input
+            className="rsvp-input"
             type="email"
             value={value as string}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
@@ -134,6 +137,7 @@ export default function RSVPPage() {
       case 'text':
         return (
           <input
+            className="rsvp-input"
             type="text"
             value={value as string}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
@@ -143,6 +147,7 @@ export default function RSVPPage() {
       case 'dropdown':
         return (
           <select
+            className="rsvp-input"
             value={value as string}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
           >
@@ -156,9 +161,9 @@ export default function RSVPPage() {
         );
       case 'multipleChoice':
         return (
-          <div>
+          <div className="form-options">
             {question.options?.map((opt) => (
-              <label key={opt} style={{ display: 'block', margin: '8px 0' }}>
+              <label key={opt} className="form-option-label">
                 <input
                   type="radio"
                   name={question.id}
@@ -166,11 +171,11 @@ export default function RSVPPage() {
                   checked={value === opt}
                   onChange={(e) => handleAnswer(question.id, e.target.value)}
                 />
-                {' '}{opt}
+                <span className="option-text">{opt}</span>
               </label>
             ))}
             {question.otherOption && (
-              <label style={{ display: 'block', margin: '8px 0' }}>
+              <label className="form-option-label">
                 <input
                   type="radio"
                   name={question.id}
@@ -178,12 +183,12 @@ export default function RSVPPage() {
                   checked={value === 'Other'}
                   onChange={(e) => handleAnswer(question.id, e.target.value)}
                 />
-                {' '}Other
+                <span className="option-text">Other</span>
                 {value === 'Other' && (
                   <input
+                    className="rsvp-input other-input"
                     type="text"
                     placeholder="Please specify"
-                    style={{ marginLeft: '10px' }}
                     onChange={(e) => handleAnswer(question.id, e.target.value)}
                   />
                 )}
@@ -204,15 +209,15 @@ export default function RSVPPage() {
           }
         };
         return (
-          <div>
+          <div className="form-options">
             {question.options?.map((opt) => (
-              <label key={opt} style={{ display: 'block', margin: '8px 0' }}>
+              <label key={opt} className="form-option-label">
                 <input
                   type="checkbox"
                   checked={currentValues.includes(opt)}
                   onChange={() => handleCheckbox(opt)}
                 />
-                {' '}{opt}
+                <span className="option-text">{opt}</span>
               </label>
             ))}
           </div>
@@ -220,6 +225,7 @@ export default function RSVPPage() {
       default:
         return (
           <input
+            className="rsvp-input"
             type="text"
             value={value as string}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
@@ -233,9 +239,7 @@ export default function RSVPPage() {
       <div className="app-domain rsvp-page">
         <div className="texts">
           <h1>You're in! 🎉</h1>
-          <h3>
-            We've received your RSVP. See you at SST Open House 2026!
-          </h3>
+          <h3>We've received your RSVP. See you at SST Open House 2026!</h3>
         </div>
       </div>
     );
@@ -245,42 +249,44 @@ export default function RSVPPage() {
     return (
       <div className="app-domain rsvp-page">
         <div className="texts">
-          <h1>
-            <span>{formData.formTitle}</span>
-          </h1>
-          <h3>
-            Question {currentQuestionIndex + 1} of {visibleQuestions.length}
-          </h3>
-
           {visibleCurrentQuestion && (
-            <div>
-              <label>
+            <div className="form-question">
+              <label className="form-label">
                 {visibleCurrentQuestion.label}
                 {visibleCurrentQuestion.required && (
-                  <span style={{ color: 'red' }}> *</span>
+                  <span className="required-star"> *</span>
                 )}
               </label>
               {visibleCurrentQuestion.description && (
-                <p>
+                <p className="form-description">
                   <small>{visibleCurrentQuestion.description}</small>
                 </p>
               )}
               {renderQuestionInput(visibleCurrentQuestion)}
-              {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+              {errorMsg && <p className="form-error">{errorMsg}</p>}
             </div>
           )}
 
-          <div style={{ marginTop: '20px' }}>
-            {!isFirstQuestion && (
-              <button onClick={handleBack} style={{ marginRight: '10px' }}>
-                Back
-              </button>
-            )}
-            {isLastQuestion ? (
-              <button onClick={handleSubmitForm}>Submit</button>
-            ) : (
-              <button onClick={handleNext}>Proceed</button>
-            )}
+          <div className="form-nav-buttons">
+            <div className="but-cont">
+              {!isFirstQuestion && (
+                <button
+                  className="rsvp-button form-back-button"
+                  onClick={handleBack}
+                >
+                  Back
+                </button>
+              )}
+              {isLastQuestion ? (
+                <button className="rsvp-button" onClick={handleSubmitForm}>
+                  Submit
+                </button>
+              ) : (
+                <button className="rsvp-button" onClick={handleNext}>
+                  Next
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -313,10 +319,7 @@ export default function RSVPPage() {
             </div>
           </form> */}
         <div className="but-cont">
-          <button
-            className="rsvp-button"
-            onClick={() => setShowForm(true)}
-          >
+          <button className="rsvp-button" onClick={() => setShowForm(true)}>
             <h3>RSVP NOW!</h3>
           </button>
         </div>
