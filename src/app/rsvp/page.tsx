@@ -282,8 +282,6 @@ export default function RSVPPage() {
       <div className="app-domain rsvp-page">
         <div className="texts rsvp-form-view">
           <div className="rsvp-form-card">
-            <p className="rsvp-form-title">{formData.formTitle}</p>
-
             {/* Progress bar */}
             <div className="rsvp-progress-wrap">
               <div className="rsvp-progress-track">
