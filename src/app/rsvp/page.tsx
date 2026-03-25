@@ -334,7 +334,7 @@ export default function RSVPPage() {
                 </button>
               ) : (
                 <button className="rsvp-button" onClick={handleNext}>
-                  <h3>Proceed</h3>
+                  <h3>Next</h3>
                 </button>
               )}
             </div>
