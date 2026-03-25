@@ -348,7 +348,7 @@ export default function RSVPPage() {
         <h1>
           <span>RSVP</span> for SST Open House 2026!
         </h1>
-        <h3>
+        <h3 className="rsvpstart-description">
           Get ready for immersive experiences to help decide if SST is the
           school for you!
         </h3>
