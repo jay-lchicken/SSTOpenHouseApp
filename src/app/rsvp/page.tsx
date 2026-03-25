@@ -147,7 +147,7 @@ export default function RSVPPage() {
       case 'dropdown':
         return (
           <select
-            className="rsvp-input"
+            className="rsvp-select"
             value={value as string}
             onChange={(e) => handleAnswer(question.id, e.target.value)}
           >
@@ -161,9 +161,9 @@ export default function RSVPPage() {
         );
       case 'multipleChoice':
         return (
-          <div className="form-options">
+          <div className="rsvp-options-list">
             {question.options?.map((opt) => (
-              <label key={opt} className="form-option-label">
+              <label key={opt} className="rsvp-option-label">
                 <input
                   type="radio"
                   name={question.id}
@@ -171,32 +171,34 @@ export default function RSVPPage() {
                   checked={value === opt}
                   onChange={(e) => handleAnswer(question.id, e.target.value)}
                 />
-                <span className="option-text">{opt}</span>
+                {opt}
               </label>
             ))}
             {question.otherOption && (
-              <label className="form-option-label">
-                <input
-                  type="radio"
-                  name={question.id}
-                  value="Other"
-                  checked={value === 'Other'}
-                  onChange={(e) => handleAnswer(question.id, e.target.value)}
-                />
-                <span className="option-text">Other</span>
+              <>
+                <label className="rsvp-option-label">
+                  <input
+                    type="radio"
+                    name={question.id}
+                    value="Other"
+                    checked={value === 'Other'}
+                    onChange={(e) => handleAnswer(question.id, e.target.value)}
+                  />
+                  Other
+                </label>
                 {value === 'Other' && (
                   <input
-                    className="rsvp-input other-input"
+                    className="rsvp-input rsvp-other-input"
                     type="text"
                     placeholder="Please specify"
                     onChange={(e) => handleAnswer(question.id, e.target.value)}
                   />
                 )}
-              </label>
+              </>
             )}
           </div>
         );
-      case 'multipleTickbox':
+      case 'multipleTickbox': {
         const currentValues = (value as string[]) || [];
         const handleCheckbox = (opt: string) => {
           if (currentValues.includes(opt)) {
@@ -208,20 +210,47 @@ export default function RSVPPage() {
             handleAnswer(question.id, [...currentValues, opt]);
           }
         };
+        const otherChecked = currentValues.includes('Other');
         return (
-          <div className="form-options">
+          <div className="rsvp-options-list">
             {question.options?.map((opt) => (
-              <label key={opt} className="form-option-label">
+              <label key={opt} className="rsvp-option-label">
                 <input
                   type="checkbox"
                   checked={currentValues.includes(opt)}
                   onChange={() => handleCheckbox(opt)}
                 />
-                <span className="option-text">{opt}</span>
+                {opt}
               </label>
             ))}
+            {question.otherOption && (
+              <>
+                <label className="rsvp-option-label">
+                  <input
+                    type="checkbox"
+                    checked={otherChecked}
+                    onChange={() => handleCheckbox('Other')}
+                  />
+                  Other
+                </label>
+                {otherChecked && (
+                  <input
+                    className="rsvp-input rsvp-other-input"
+                    type="text"
+                    placeholder="Please specify"
+                    onChange={(e) =>
+                      handleAnswer(question.id, [
+                        ...currentValues.filter((v) => v !== 'Other'),
+                        e.target.value,
+                      ])
+                    }
+                  />
+                )}
+              </>
+            )}
           </div>
         );
+      }
       default:
         return (
           <input
@@ -246,44 +275,66 @@ export default function RSVPPage() {
   }
 
   if (showForm) {
+    const progressPercent =
+      ((currentQuestionIndex + 1) / visibleQuestions.length) * 100;
+
     return (
       <div className="app-domain rsvp-page">
-        <div className="texts">
-          {visibleCurrentQuestion && (
-            <div className="form-question">
-              <label className="form-label">
-                {visibleCurrentQuestion.label}
-                {visibleCurrentQuestion.required && (
-                  <span className="required-star"> *</span>
-                )}
-              </label>
-              {visibleCurrentQuestion.description && (
-                <p className="form-description">
-                  <small>{visibleCurrentQuestion.description}</small>
-                </p>
-              )}
-              {renderQuestionInput(visibleCurrentQuestion)}
-              {errorMsg && <p className="form-error">{errorMsg}</p>}
-            </div>
-          )}
+        <div className="texts rsvp-form-view">
+          <div className="rsvp-form-card">
+            <p className="rsvp-form-title">{formData.formTitle}</p>
 
-          <div className="form-nav-buttons">
-            <div className="but-cont">
+            {/* Progress bar */}
+            <div className="rsvp-progress-wrap">
+              <div className="rsvp-progress-track">
+                <div
+                  className="rsvp-progress-fill"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+              <div className="rsvp-progress-label">
+                <span>
+                  Question {currentQuestionIndex + 1} of{' '}
+                  {visibleQuestions.length}
+                </span>
+                <span>{Math.round(progressPercent)}%</span>
+              </div>
+            </div>
+
+            {visibleCurrentQuestion && (
+              <div>
+                <label className="rsvp-question-label">
+                  {visibleCurrentQuestion.label}
+                  {visibleCurrentQuestion.required && (
+                    <span className="rsvp-required"> *</span>
+                  )}
+                </label>
+                {visibleCurrentQuestion.description && (
+                  <p className="rsvp-question-description">
+                    {visibleCurrentQuestion.description}
+                  </p>
+                )}
+                {renderQuestionInput(visibleCurrentQuestion)}
+                {errorMsg && <p className="rsvp-error">{errorMsg}</p>}
+              </div>
+            )}
+
+            <div className="rsvp-nav-buttons">
               {!isFirstQuestion && (
                 <button
-                  className="rsvp-button form-back-button"
+                  className="rsvp-button rsvp-button-back"
                   onClick={handleBack}
                 >
-                  Back
+                  <h3>Back</h3>
                 </button>
               )}
               {isLastQuestion ? (
                 <button className="rsvp-button" onClick={handleSubmitForm}>
-                  Submit
+                  <h3>Submit</h3>
                 </button>
               ) : (
                 <button className="rsvp-button" onClick={handleNext}>
-                  Next
+                  <h3>Proceed</h3>
                 </button>
               )}
             </div>
