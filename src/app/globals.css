@@ -1588,3 +1588,117 @@ p .event-description {
 .rsvpstart-description {
   font-weight: 400;
 }
+
+/* ── Navigation Map ── */
+.nav-controls {
+  margin-bottom: 16px;
+}
+
+.nav-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.nav-icon {
+  font-size: 20px;
+  color: #1a1a1a;
+  opacity: 0.6;
+  margin-top: 10px;
+  flex-shrink: 0;
+}
+
+.nav-selects {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  min-width: 36px;
+  opacity: 0.7;
+}
+
+.nav-select {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a1a1a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: all 0.2s ease;
+}
+
+.nav-select:focus {
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nav-hint {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(26, 26, 26, 0.5);
+  margin: 12px 0 0;
+}
+
+.nav-maps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.nav-map-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-map-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  opacity: 0.8;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.nav-canvas-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-canvas-wrap canvas {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+}

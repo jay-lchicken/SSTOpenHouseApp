@@ -1,15 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapLocationDot,
   faArrowRight,
   faXmark,
   faMagnifyingGlass,
+  faRoute,
 } from '@fortawesome/free-solid-svg-icons';
 import booths from './booths.json';
 import schedule from './schedule.json';
+import { GraphCanvas } from '@/components/GraphCanvas';
+import { edges, levelData, dijkstra, type NodeId } from '@/app/graphData';
+import { venueToNode } from '@/app/venueNodes';
 
 interface Booth {
   id: number;
@@ -83,12 +87,46 @@ function formatTime(time: string): string {
   return `${hour}:${minute}`;
 }
 
+const venueNames = Object.keys(venueToNode).sort();
+
 export default function Home() {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentTime, setCurrentTime] = useState('1040');
+  const [navFrom, setNavFrom] = useState(venueNames[0] ?? '');
+  const [navTo, setNavTo] = useState(venueNames[1] ?? '');
+
+  const navResult = useMemo(() => {
+    const startNode = venueToNode[navFrom];
+    const endNode = venueToNode[navTo];
+    if (!startNode || !endNode || startNode === endNode)
+      return { path: [] as NodeId[], distance: 0 };
+    return dijkstra(edges, startNode, endNode);
+  }, [navFrom, navTo]);
+
+  const levelNodesMap = useMemo(() => {
+    const map = new Map<keyof typeof levelData, Set<NodeId>>();
+    (Object.keys(levelData) as Array<keyof typeof levelData>).forEach(
+      (key) => {
+        map.set(key, new Set(levelData[key].nodes.map((n) => n.id)));
+      },
+    );
+    return map;
+  }, []);
+
+  const navLevels = useMemo(() => {
+    const levels: Array<keyof typeof levelData> = [];
+    if (!navResult.path.length) return levels;
+    for (const levelKey of Object.keys(levelData) as Array<
+      keyof typeof levelData
+    >) {
+      const nodeSet = levelNodesMap.get(levelKey)!;
+      if (navResult.path.some((id) => nodeSet.has(id))) levels.push(levelKey);
+    }
+    return levels;
+  }, [navResult.path, levelNodesMap]);
 
   // useEffect(() => {
   //   const getCurrentTime = () => {
@@ -143,8 +181,77 @@ export default function Home() {
         </div>
         <div className="header-expanded-content">
           <div className="map-content">
-            <div className="map-placeholder">
-              <p>Interactive map coming soon...</p>
+            <div className="nav-controls">
+              <div className="nav-row">
+                <FontAwesomeIcon icon={faRoute} className="nav-icon" />
+                <div className="nav-selects">
+                  <div className="nav-field">
+                    <span className="nav-label">From</span>
+                    <select
+                      className="nav-select"
+                      value={navFrom}
+                      onChange={(e) => setNavFrom(e.target.value)}
+                    >
+                      {venueNames.map((v) => (
+                        <option key={v} value={v}>
+                          {v}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="nav-field">
+                    <span className="nav-label">To</span>
+                    <select
+                      className="nav-select"
+                      value={navTo}
+                      onChange={(e) => setNavTo(e.target.value)}
+                    >
+                      {venueNames.map((v) => (
+                        <option key={v} value={v}>
+                          {v}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              {navFrom === navTo && (
+                <p className="nav-hint">Select different locations</p>
+              )}
+              {navFrom !== navTo && navResult.path.length === 0 && (
+                <p className="nav-hint">No path found</p>
+              )}
+            </div>
+            <div className="nav-maps">
+              {navResult.path.length > 0 &&
+                navLevels.map((levelKey) => {
+                  const levelInfo = levelData[levelKey];
+                  const nodeSet = levelNodesMap.get(levelKey)!;
+                  const levelEdges = edges.filter(
+                    (edge) =>
+                      nodeSet.has(edge.from) && nodeSet.has(edge.to),
+                  );
+                  const levelPath = navResult.path.filter((id) =>
+                    nodeSet.has(id),
+                  );
+                  return (
+                    <div key={levelKey} className="nav-map-section">
+                      <h4 className="nav-map-label">{levelKey}</h4>
+                      <div className="nav-canvas-wrap">
+                        <GraphCanvas
+                          nodes={levelInfo.nodes}
+                          edges={levelEdges}
+                          shortestPath={levelPath}
+                          mapSrc={levelInfo.src}
+                          width={800}
+                          height={600}
+                          showAllEdges={false}
+                          showAllNodes={false}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

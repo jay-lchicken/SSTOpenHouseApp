@@ -78,9 +78,62 @@ export default function RSVPPage() {
     }
   }
 
-  function handleSubmitForm() {
-    console.log('Submitting:', answers);
-    setStatus('success');
+  function isAnswerEmpty(value: string | string[] | undefined) {
+    if (value === undefined) return true;
+    if (Array.isArray(value)) {
+      return value.length === 0 || value.every((v) => !String(v).trim());
+    }
+    return !String(value).trim();
+  }
+
+  async function handleSubmitForm() {
+    const missingRequired = visibleQuestions.find(
+      (q) => q.required && isAnswerEmpty(answers[q.id] as string | string[]),
+    );
+
+    if (missingRequired) {
+      setErrorMsg(`Please answer: ${missingRequired.label}`);
+      setStatus('error');
+      return;
+    }
+
+    const emailValue = String(answers.email ?? '').trim();
+    if (!emailValue) {
+      setErrorMsg('Email is required.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('loading');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/openhouse-rsvp', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailValue,
+          responses: answers,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(
+          data.message || 'Something went wrong. Please try again.',
+        );
+      }
+
+      setStatus('success');
+    } catch (err: any) {
+      if (err && 'message' in err) {
+        setErrorMsg(err.message);
+        setStatus('error');
+      }
+    }
   }
 
   async function handleRSVP(e: FormEvent) {
