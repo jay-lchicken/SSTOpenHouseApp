@@ -15,7 +15,6 @@ import { Booths } from '@/components/Booths';
 import { edges, levelData, dijkstra, type NodeId } from '@/app/graphData';
 import { venueToNode } from '@/app/venueNodes';
 
-
 function formatTime(time: string): string {
   const hour = time.slice(0, 2);
   const minute = time.slice(2);
@@ -30,8 +29,13 @@ export default function Home() {
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(() => {
     const now = new Date();
-    const sgtMinutes = (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
-    return Math.floor(sgtMinutes / 60).toString().padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0');
+    const sgtMinutes =
+      (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
+    return (
+      Math.floor(sgtMinutes / 60)
+        .toString()
+        .padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0')
+    );
   });
   const [navFrom, setNavFrom] = useState(venueNames[0] ?? '');
   const [navTo, setNavTo] = useState(venueNames[1] ?? '');
@@ -46,11 +50,9 @@ export default function Home() {
 
   const levelNodesMap = useMemo(() => {
     const map = new Map<keyof typeof levelData, Set<NodeId>>();
-    (Object.keys(levelData) as Array<keyof typeof levelData>).forEach(
-      (key) => {
-        map.set(key, new Set(levelData[key].nodes.map((n) => n.id)));
-      },
-    );
+    (Object.keys(levelData) as Array<keyof typeof levelData>).forEach((key) => {
+      map.set(key, new Set(levelData[key].nodes.map((n) => n.id)));
+    });
     return map;
   }, []);
 
@@ -69,8 +71,13 @@ export default function Home() {
   useEffect(() => {
     const getSGTTime = () => {
       const now = new Date();
-      const sgtMinutes = (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
-      return Math.floor(sgtMinutes / 60).toString().padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0');
+      const sgtMinutes =
+        (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
+      return (
+        Math.floor(sgtMinutes / 60)
+          .toString()
+          .padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0')
+      );
     };
     const interval = setInterval(() => setCurrentTime(getSGTTime()), 60000);
     return () => clearInterval(interval);
@@ -158,8 +165,7 @@ export default function Home() {
                   const levelInfo = levelData[levelKey];
                   const nodeSet = levelNodesMap.get(levelKey)!;
                   const levelEdges = edges.filter(
-                    (edge) =>
-                      nodeSet.has(edge.from) && nodeSet.has(edge.to),
+                    (edge) => nodeSet.has(edge.from) && nodeSet.has(edge.to),
                   );
                   const levelPath = navResult.path.filter((id) =>
                     nodeSet.has(id),
@@ -199,19 +205,13 @@ export default function Home() {
             <div className="carousel-container">
               <div className="carousel-track">
                 <div className="carousel-item">
-                  <img src="banner1.png" alt="banner 1" />
+                  <img src="banner1.avif" alt="banner 1" />
                 </div>
                 <div className="carousel-item">
-                  <img src="banner1.png" alt="banner 2" />
+                  <img src="banner1.avif" alt="banner 2" />
                 </div>
                 <div className="carousel-item">
-                  <img src="banner1.png" alt="banner 3" />
-                </div>
-                <div className="carousel-item">
-                  <img src="banner1.png" alt="banner 4" />
-                </div>
-                <div className="carousel-item">
-                  <img src="banner1.png" alt="banner 5" />
+                  <img src="banner1.avif" alt="banner 3" />
                 </div>
               </div>
             </div>
@@ -261,9 +261,7 @@ export default function Home() {
       )}
 
       {isSchedulePopupOpen && (
-        <Schedule
-          onClose={() => setIsSchedulePopupOpen(false)}
-        />
+        <Schedule onClose={() => setIsSchedulePopupOpen(false)} />
       )}
     </div>
   );
