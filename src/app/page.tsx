@@ -254,7 +254,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <p className="credits">Made by Hong Yu & Leung Yin of S304</p>
+        <p className="credits">
+          Made by Hong Yu & Leung Yin of S304 NOT ASSOCIATED WITH SSTINC
+        </p>
       </main>
       {isEventsPopupOpen && (
         <Booths onClose={() => setIsEventsPopupOpen(false)} />
