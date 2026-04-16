@@ -25,6 +25,8 @@ export type GraphCanvasProps = {
   height?: number;
   showAllEdges?: boolean;
   showAllNodes?: boolean;
+  startNodeId?: NodeId;
+  endNodeId?: NodeId;
 };
 
 function edgeKey(a: NodeId, b: NodeId) {
@@ -43,6 +45,8 @@ export function GraphCanvas(props: GraphCanvasProps) {
     height,
     showAllEdges = true,
     showAllNodes = true,
+    startNodeId,
+    endNodeId,
   } = props;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasWidth = width ?? 800;
@@ -163,13 +167,51 @@ export function GraphCanvas(props: GraphCanvasProps) {
         for (const node of layoutNodes) {
           const isPathNode = pathNodeSet.has(node.id);
           if (!showAllNodes && !isPathNode) continue;
-          ctx.fillStyle = isPathNode ? "#2563eb" : "#ef4444";
-          ctx.beginPath();
-          ctx.arc(sx(node.x as number), sy(node.y as number), 6, 0, Math.PI * 2);
-          ctx.fill();
+          const isStart = node.id === startNodeId;
+          const isEnd = node.id === endNodeId;
+          const nx = sx(node.x as number);
+          const ny = sy(node.y as number);
 
-          ctx.fillStyle = "#111827";
-          ctx.fillText(String(node.id), sx(node.x as number) + 8, sy(node.y as number));
+          if (isStart || isEnd) {
+            const color = isStart ? "#16a34a" : "#dc2626";
+            const label = isStart ? "Start" : "End";
+
+            // Pin circle
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(nx, ny, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            // White inner dot
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(nx, ny, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Label background
+            ctx.font = "bold 13px sans-serif";
+            const textW = ctx.measureText(label).width;
+            const pad = 4;
+            const lx = nx - textW / 2 - pad;
+            const ly = ny - 28;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.roundRect(lx, ly, textW + pad * 2, 20, 4);
+            ctx.fill();
+
+            // Label text
+            ctx.fillStyle = "#ffffff";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            ctx.fillText(label, nx, ly + 10);
+            ctx.textAlign = "left";
+            ctx.font = "12px sans-serif";
+          } else {
+            ctx.fillStyle = isPathNode ? "#2563eb" : "#ef4444";
+            ctx.beginPath();
+            ctx.arc(nx, ny, 6, 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
       }
     };
@@ -185,7 +227,7 @@ export function GraphCanvas(props: GraphCanvasProps) {
     return () => {
       cancelled = true;
     };
-  }, [edges, layoutNodes, nodeMap, pathEdgeSet, pathNodeSet, mapSrc, canvasWidth, canvasHeight]);
+  }, [edges, layoutNodes, nodeMap, pathEdgeSet, pathNodeSet, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId]);
 
   return (
     <canvas

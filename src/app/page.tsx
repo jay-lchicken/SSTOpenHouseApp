@@ -57,15 +57,17 @@ export default function Home() {
   }, []);
 
   const navLevels = useMemo(() => {
-    const levels: Array<keyof typeof levelData> = [];
-    if (!navResult.path.length) return levels;
-    for (const levelKey of Object.keys(levelData) as Array<
-      keyof typeof levelData
-    >) {
+    if (!navResult.path.length) return [] as Array<keyof typeof levelData>;
+    const levelKeys = Object.keys(levelData) as Array<keyof typeof levelData>;
+    const firstIndex = new Map<keyof typeof levelData, number>();
+    for (const levelKey of levelKeys) {
       const nodeSet = levelNodesMap.get(levelKey)!;
-      if (navResult.path.some((id) => nodeSet.has(id))) levels.push(levelKey);
+      const idx = navResult.path.findIndex((id) => nodeSet.has(id));
+      if (idx !== -1) firstIndex.set(levelKey, idx);
     }
-    return levels;
+    return [...firstIndex.keys()].sort(
+      (a, b) => firstIndex.get(a)! - firstIndex.get(b)!,
+    );
   }, [navResult.path, levelNodesMap]);
 
   useEffect(() => {
@@ -170,6 +172,8 @@ export default function Home() {
                   const levelPath = navResult.path.filter((id) =>
                     nodeSet.has(id),
                   );
+                  const globalStart = navResult.path[0];
+                  const globalEnd = navResult.path[navResult.path.length - 1];
                   return (
                     <div key={levelKey} className="nav-map-section">
                       <h4 className="nav-map-label">{levelKey}</h4>
@@ -183,6 +187,8 @@ export default function Home() {
                           height={600}
                           showAllEdges={false}
                           showAllNodes={false}
+                          startNodeId={nodeSet.has(globalStart) ? globalStart : undefined}
+                          endNodeId={nodeSet.has(globalEnd) ? globalEnd : undefined}
                         />
                       </div>
                     </div>
