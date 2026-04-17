@@ -1664,7 +1664,46 @@ p .event-description {
   text-align: center;
   font-size: 13px;
   color: rgba(26, 26, 26, 0.5);
-  margin: 12px 0 0;
+  margin: 10px 0 0;
+}
+
+.nav-hint-info {
+  color: #2563eb;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.nav-swap-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2px;
+}
+
+.nav-swap-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.3);
+  color: #1a1a1a;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-swap-btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: rotate(180deg);
+}
+
+.nav-swap-btn:active {
+  transform: rotate(180deg) scale(0.92);
 }
 
 .nav-maps {
@@ -1678,7 +1717,24 @@ p .event-description {
 .nav-map-section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+}
+
+.nav-map-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-step-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+  background: #2563eb;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .nav-map-label {
@@ -1687,11 +1743,29 @@ p .event-description {
   font-weight: 700;
   color: #1a1a1a;
   opacity: 0.8;
-  padding: 6px 12px;
+  padding: 5px 12px;
   background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   display: inline-block;
-  align-self: flex-start;
+}
+
+.nav-level-transition {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  border-radius: 12px;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.nav-transition-arrow {
+  color: #2563eb;
+  font-size: 13px;
+  flex-shrink: 0;
+  transform: rotate(90deg);
 }
 
 .nav-canvas-wrap {

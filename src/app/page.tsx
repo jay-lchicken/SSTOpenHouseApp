@@ -7,6 +7,7 @@ import {
   faArrowRight,
   faXmark,
   faRoute,
+  faArrowsUpDown,
 } from '@fortawesome/free-solid-svg-icons';
 import schedule from './schedule.json';
 import { GraphCanvas } from '@/components/GraphCanvas';
@@ -56,8 +57,29 @@ export default function Home() {
     return map;
   }, []);
 
+  // Connector nodes are nodes that appear in edges crossing between two different levels.
+  // A level whose entire path segment consists only of connector nodes is just transit — skip it.
+  const connectorNodes = useMemo(() => {
+    const levelForNode = new Map<NodeId, string>();
+    for (const [levelKey, nodeSet] of levelNodesMap) {
+      for (const nodeId of nodeSet) levelForNode.set(nodeId, levelKey);
+    }
+    const connectors = new Set<NodeId>();
+    for (const edge of edges) {
+      const fromLevel = levelForNode.get(edge.from);
+      const toLevel = levelForNode.get(edge.to);
+      if (fromLevel && toLevel && fromLevel !== toLevel) {
+        connectors.add(edge.from);
+        connectors.add(edge.to);
+      }
+    }
+    return connectors;
+  }, [levelNodesMap]);
+
   const navLevels = useMemo(() => {
     if (!navResult.path.length) return [] as Array<keyof typeof levelData>;
+    const globalStart = navResult.path[0];
+    const globalEnd = navResult.path[navResult.path.length - 1];
     const levelKeys = Object.keys(levelData) as Array<keyof typeof levelData>;
     const firstIndex = new Map<keyof typeof levelData, number>();
     for (const levelKey of levelKeys) {
@@ -65,10 +87,18 @@ export default function Home() {
       const idx = navResult.path.findIndex((id) => nodeSet.has(id));
       if (idx !== -1) firstIndex.set(levelKey, idx);
     }
-    return [...firstIndex.keys()].sort(
+    const ordered = [...firstIndex.keys()].sort(
       (a, b) => firstIndex.get(a)! - firstIndex.get(b)!,
     );
-  }, [navResult.path, levelNodesMap]);
+    // Filter out levels that are purely transit (all path nodes are connectors)
+    // unless that level contains the actual start or end of the route.
+    return ordered.filter((levelKey) => {
+      const nodeSet = levelNodesMap.get(levelKey)!;
+      const levelPath = navResult.path.filter((id) => nodeSet.has(id));
+      if (levelPath.includes(globalStart) || levelPath.includes(globalEnd)) return true;
+      return levelPath.some((id) => !connectorNodes.has(id));
+    });
+  }, [navResult.path, levelNodesMap, connectorNodes]);
 
   useEffect(() => {
     const getSGTTime = () => {
@@ -138,6 +168,19 @@ export default function Home() {
                       ))}
                     </select>
                   </div>
+                  <div className="nav-swap-row">
+                    <button
+                      className="nav-swap-btn"
+                      onClick={() => {
+                        const tmp = navFrom;
+                        setNavFrom(navTo);
+                        setNavTo(tmp);
+                      }}
+                      title="Swap directions"
+                    >
+                      <FontAwesomeIcon icon={faArrowsUpDown} />
+                    </button>
+                  </div>
                   <div className="nav-field">
                     <span className="nav-label">To</span>
                     <select
@@ -155,15 +198,18 @@ export default function Home() {
                 </div>
               </div>
               {navFrom === navTo && (
-                <p className="nav-hint">Select different locations</p>
+                <p className="nav-hint">Choose two different locations</p>
               )}
               {navFrom !== navTo && navResult.path.length === 0 && (
-                <p className="nav-hint">No path found</p>
+                <p className="nav-hint">No path found between these locations</p>
+              )}
+              {navFrom !== navTo && navResult.path.length > 0 && navLevels.length > 1 && (
+                <p className="nav-hint nav-hint-info">{navLevels.length} floor{navLevels.length > 1 ? 's' : ''} &middot; follow the steps below</p>
               )}
             </div>
             <div className="nav-maps">
               {navResult.path.length > 0 &&
-                navLevels.map((levelKey) => {
+                navLevels.map((levelKey, index) => {
                   const levelInfo = levelData[levelKey];
                   const nodeSet = levelNodesMap.get(levelKey)!;
                   const levelEdges = edges.filter(
@@ -174,9 +220,16 @@ export default function Home() {
                   );
                   const globalStart = navResult.path[0];
                   const globalEnd = navResult.path[navResult.path.length - 1];
+                  const isMultiLevel = navLevels.length > 1;
+                  const nextLevel = navLevels[index + 1];
                   return (
                     <div key={levelKey} className="nav-map-section">
-                      <h4 className="nav-map-label">{levelKey}</h4>
+                      <div className="nav-map-header">
+                        {isMultiLevel && (
+                          <span className="nav-step-badge">Step {index + 1}</span>
+                        )}
+                        <h4 className="nav-map-label">{levelKey}</h4>
+                      </div>
                       <div className="nav-canvas-wrap">
                         <GraphCanvas
                           nodes={levelInfo.nodes}
@@ -191,6 +244,12 @@ export default function Home() {
                           endNodeId={nodeSet.has(globalEnd) ? globalEnd : undefined}
                         />
                       </div>
+                      {nextLevel && (
+                        <div className="nav-level-transition">
+                          <FontAwesomeIcon icon={faArrowRight} className="nav-transition-arrow" />
+                          <span>Head to <strong>{nextLevel}</strong></span>
+                        </div>
+                      )}
                     </div>
                   );
                 })}

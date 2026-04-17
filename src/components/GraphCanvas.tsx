@@ -132,9 +132,10 @@ export function GraphCanvas(props: GraphCanvasProps) {
       const sy = (y: number) => y * scaleY;
 
       if (showAllEdges) {
-        // Draw all edges in gray
-        ctx.strokeStyle = "#c0c0c0";
-        ctx.lineWidth = 1;
+        // Draw all edges in gray (debug/graph view)
+        ctx.strokeStyle = "rgba(0,0,0,0.18)";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
         for (const edge of edges) {
           const from = nodeMap.get(edge.from);
           const to = nodeMap.get(edge.to);
@@ -144,75 +145,151 @@ export function GraphCanvas(props: GraphCanvasProps) {
           ctx.lineTo(sx(to.x as number), sy(to.y as number));
           ctx.stroke();
         }
+        ctx.setLineDash([]);
       }
 
-      // Draw path edges on top
-      ctx.strokeStyle = "#2563eb";
-      ctx.lineWidth = 3;
-      for (const edge of edges) {
-        const key = edgeKey(edge.from, edge.to);
-        if (!pathEdgeSet.has(key)) continue;
-        const from = nodeMap.get(edge.from);
-        const to = nodeMap.get(edge.to);
-        if (!from || !to) continue;
+      // Draw path edges
+      if (shortestPath.length > 1) {
+        // Outer glow effect on path
+        ctx.strokeStyle = "rgba(37,99,235,0.25)";
+        ctx.lineWidth = 9;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
         ctx.beginPath();
-        ctx.moveTo(sx(from.x as number), sy(from.y as number));
-        ctx.lineTo(sx(to.x as number), sy(to.y as number));
+        for (let i = 0; i < shortestPath.length - 1; i++) {
+          const from = nodeMap.get(shortestPath[i]);
+          const to = nodeMap.get(shortestPath[i + 1]);
+          if (!from || !to) continue;
+          ctx.moveTo(sx(from.x as number), sy(from.y as number));
+          ctx.lineTo(sx(to.x as number), sy(to.y as number));
+        }
         ctx.stroke();
+
+        // Solid path line
+        ctx.strokeStyle = "#2563eb";
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.beginPath();
+        for (let i = 0; i < shortestPath.length - 1; i++) {
+          const from = nodeMap.get(shortestPath[i]);
+          const to = nodeMap.get(shortestPath[i + 1]);
+          if (!from || !to) continue;
+          ctx.moveTo(sx(from.x as number), sy(from.y as number));
+          ctx.lineTo(sx(to.x as number), sy(to.y as number));
+        }
+        ctx.stroke();
+
+        // Directional arrows at midpoints of each path segment
+        const arrowSize = 11;
+        const arrowAngle = Math.PI / 5;
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = "round";
+        for (let i = 0; i < shortestPath.length - 1; i++) {
+          const from = nodeMap.get(shortestPath[i]);
+          const to = nodeMap.get(shortestPath[i + 1]);
+          if (!from || !to) continue;
+          const fx = sx(from.x as number), fy = sy(from.y as number);
+          const tx = sx(to.x as number), ty = sy(to.y as number);
+          const segLen = Math.sqrt((tx - fx) ** 2 + (ty - fy) ** 2);
+          // Only draw arrow if segment is long enough
+          if (segLen < 20) continue;
+          const angle = Math.atan2(ty - fy, tx - fx);
+          // Place arrow tip at 60% along the segment
+          const mx = fx + (tx - fx) * 0.6;
+          const my = fy + (ty - fy) * 0.6;
+          ctx.beginPath();
+          ctx.moveTo(mx, my);
+          ctx.lineTo(mx - arrowSize * Math.cos(angle - arrowAngle), my - arrowSize * Math.sin(angle - arrowAngle));
+          ctx.moveTo(mx, my);
+          ctx.lineTo(mx - arrowSize * Math.cos(angle + arrowAngle), my - arrowSize * Math.sin(angle + arrowAngle));
+          ctx.stroke();
+        }
       }
 
-      if (showAllNodes || pathNodeSet.size > 0) {
+      // Draw nodes (debug mode) or just start/end markers
+      if (showAllNodes && pathNodeSet.size === 0) {
+        // Debug: show all nodes as small dots
         ctx.font = "12px sans-serif";
         ctx.textBaseline = "middle";
         for (const node of layoutNodes) {
-          const isPathNode = pathNodeSet.has(node.id);
-          if (!showAllNodes && !isPathNode) continue;
-          const isStart = node.id === startNodeId;
-          const isEnd = node.id === endNodeId;
           const nx = sx(node.x as number);
           const ny = sy(node.y as number);
-
-          if (isStart || isEnd) {
-            const color = isStart ? "#16a34a" : "#dc2626";
-            const label = isStart ? "Start" : "End";
-
-            // Pin circle
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(nx, ny, 10, 0, Math.PI * 2);
-            ctx.fill();
-
-            // White inner dot
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath();
-            ctx.arc(nx, ny, 4, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Label background
-            ctx.font = "bold 13px sans-serif";
-            const textW = ctx.measureText(label).width;
-            const pad = 4;
-            const lx = nx - textW / 2 - pad;
-            const ly = ny - 28;
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.roundRect(lx, ly, textW + pad * 2, 20, 4);
-            ctx.fill();
-
-            // Label text
-            ctx.fillStyle = "#ffffff";
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "center";
-            ctx.fillText(label, nx, ly + 10);
-            ctx.textAlign = "left";
-            ctx.font = "12px sans-serif";
-          } else {
-            ctx.fillStyle = isPathNode ? "#2563eb" : "#ef4444";
-            ctx.beginPath();
-            ctx.arc(nx, ny, 6, 0, Math.PI * 2);
-            ctx.fill();
-          }
+          ctx.fillStyle = "#6b7280";
+          ctx.beginPath();
+          ctx.arc(nx, ny, 4, 0, Math.PI * 2);
+          ctx.fill();
         }
+      }
+
+      // Draw start and end markers
+      if (startNodeId || endNodeId) {
+        const drawPin = (nodeId: NodeId, isStart: boolean) => {
+          const node = nodeMap.get(nodeId);
+          if (!node) return;
+          const nx = sx(node.x as number);
+          const ny = sy(node.y as number);
+          const color = isStart ? "#16a34a" : "#dc2626";
+          const label = isStart ? "Start" : "End";
+
+          // Drop shadow
+          ctx.shadowColor = "rgba(0,0,0,0.3)";
+          ctx.shadowBlur = 8;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 2;
+
+          // Outer ring
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.arc(nx, ny, 13, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Colored circle
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.arc(nx, ny, 10, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Inner dot
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.arc(nx, ny, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.shadowColor = "transparent";
+          ctx.shadowBlur = 0;
+
+          // Label pill
+          ctx.font = "bold 12px sans-serif";
+          const textW = ctx.measureText(label).width;
+          const pad = 6;
+          const pillW = textW + pad * 2;
+          const pillH = 20;
+          const lx = nx - pillW / 2;
+          const ly = ny - 32;
+
+          // Pill shadow
+          ctx.shadowColor = "rgba(0,0,0,0.2)";
+          ctx.shadowBlur = 6;
+
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.roundRect(lx, ly, pillW, pillH, 6);
+          ctx.fill();
+
+          ctx.shadowBlur = 0;
+          ctx.shadowColor = "transparent";
+
+          ctx.fillStyle = "#ffffff";
+          ctx.textBaseline = "middle";
+          ctx.textAlign = "center";
+          ctx.fillText(label, nx, ly + pillH / 2);
+          ctx.textAlign = "left";
+        };
+
+        if (startNodeId) drawPin(startNodeId, true);
+        if (endNodeId) drawPin(endNodeId, false);
       }
     };
 
@@ -227,7 +304,7 @@ export function GraphCanvas(props: GraphCanvasProps) {
     return () => {
       cancelled = true;
     };
-  }, [edges, layoutNodes, nodeMap, pathEdgeSet, pathNodeSet, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId]);
+  }, [edges, layoutNodes, nodeMap, pathEdgeSet, pathNodeSet, shortestPath, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId, showAllEdges, showAllNodes]);
 
   return (
     <canvas
