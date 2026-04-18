@@ -6,8 +6,10 @@ import {
   faMapLocationDot,
   faXmark,
   faMagnifyingGlass,
+  faRoute,
 } from '@fortawesome/free-solid-svg-icons';
 import booths from '@/app/booths.json';
+import { venueToNode } from '@/app/venueNodes';
 
 interface Booth {
   id: number;
@@ -21,9 +23,11 @@ interface Booth {
 interface BoothDetailProps {
   booth: Booth;
   onClose: () => void;
+  onNavigate: (venue: string) => void;
 }
 
-function BoothDetail({ booth, onClose }: BoothDetailProps) {
+function BoothDetail({ booth, onClose, onNavigate }: BoothDetailProps) {
+  const isNavigable = booth.venue in venueToNode;
   return (
     <div className="booth-detail-overlay" onClick={onClose}>
       <div className="booth-detail-card" onClick={(e) => e.stopPropagation()}>
@@ -34,7 +38,18 @@ function BoothDetail({ booth, onClose }: BoothDetailProps) {
           </button>
         </div>
         <div className="booth-detail-body">
-          <h3 className="booth-detail-title">{booth.name}</h3>
+          <div className="booth-detail-title-row">
+            <h3 className="booth-detail-title">{booth.name}</h3>
+            {isNavigable && (
+              <button
+                className="booth-navigate-btn"
+                onClick={() => onNavigate(booth.venue)}
+              >
+                <FontAwesomeIcon icon={faRoute} />
+                Navigate
+              </button>
+            )}
+          </div>
           <p className="booth-detail-venue">
             <FontAwesomeIcon icon={faMapLocationDot} />
             {booth.venue}
@@ -63,9 +78,10 @@ function BoothDetail({ booth, onClose }: BoothDetailProps) {
 
 interface BoothsProps {
   onClose: () => void;
+  onNavigate: (venue: string) => void;
 }
 
-export function Booths({ onClose }: BoothsProps) {
+export function Booths({ onClose, onNavigate }: BoothsProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBooth, setSelectedBooth] = useState<Booth | null>(null);
 
@@ -126,7 +142,7 @@ export function Booths({ onClose }: BoothsProps) {
       </div>
 
       {selectedBooth && (
-        <BoothDetail booth={selectedBooth} onClose={() => setSelectedBooth(null)} />
+        <BoothDetail booth={selectedBooth} onClose={() => setSelectedBooth(null)} onNavigate={onNavigate} />
       )}
     </>
   );

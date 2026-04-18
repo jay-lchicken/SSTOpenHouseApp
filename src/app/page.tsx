@@ -324,7 +324,14 @@ export default function Home() {
         </p>
       </main>
       {isEventsPopupOpen && (
-        <Booths onClose={() => setIsEventsPopupOpen(false)} />
+        <Booths
+          onClose={() => setIsEventsPopupOpen(false)}
+          onNavigate={(venue) => {
+            setNavTo(venue);
+            setIsEventsPopupOpen(false);
+            setIsHeaderExpanded(true);
+          }}
+        />
       )}
 
       {isSchedulePopupOpen && (

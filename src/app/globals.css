@@ -1855,6 +1855,39 @@ p .event-description {
   gap: 10px;
 }
 
+.booth-detail-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.booth-navigate-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 7px 13px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.booth-navigate-btn:hover {
+  background: #1d4ed8;
+}
+
+.booth-navigate-btn:active {
+  transform: scale(0.96);
+}
+
 .booth-detail-title {
   margin: 0;
   font-size: 20px;
