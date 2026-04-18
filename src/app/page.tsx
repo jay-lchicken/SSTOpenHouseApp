@@ -139,15 +139,30 @@ export default function Home() {
       >
         <div className="header-top">
           <h2>Open House '26</h2>
-          <button
-            className="header-button"
-            onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
-          >
-            <FontAwesomeIcon
-              icon={isHeaderExpanded ? faXmark : faMapLocationDot}
-            />
-          </button>
+          {isHeaderExpanded && (
+            <button
+              className="header-button"
+              onClick={() => setIsHeaderExpanded(false)}
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
+          )}
         </div>
+        {!isHeaderExpanded && (
+          <button
+            className="nav-cta"
+            onClick={() => setIsHeaderExpanded(true)}
+          >
+            <div className="nav-cta-icon">
+              <FontAwesomeIcon icon={faMapLocationDot} />
+            </div>
+            <div className="nav-cta-text">
+              <span className="nav-cta-title">Get Directions</span>
+              <span className="nav-cta-sub">Tap to navigate around campus</span>
+            </div>
+            <FontAwesomeIcon icon={faArrowRight} className="nav-cta-arrow" />
+          </button>
+        )}
         <div className="header-expanded-content">
           <div className="map-content">
             <div className="nav-controls">
