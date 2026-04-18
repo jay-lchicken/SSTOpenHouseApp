@@ -1808,26 +1808,32 @@ p .event-description {
 }
 
 .nav-step-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
   font-size: 11px;
   font-weight: 800;
   color: #ffffff;
   background: #2563eb;
-  padding: 3px 9px;
   border-radius: 20px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .nav-map-label {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
   margin: 0;
   font-size: 14px;
   font-weight: 700;
   color: #1a1a1a;
   opacity: 0.8;
-  padding: 5px 12px;
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  display: inline-block;
+  border-radius: 15px;
+  border: 1px solid #1a1a1a;
 }
 
 .nav-level-transition {
@@ -1837,7 +1843,7 @@ p .event-description {
   padding: 10px 16px;
   background: rgba(37, 99, 235, 0.12);
   border: 1px solid rgba(37, 99, 235, 0.25);
-  border-radius: 12px;
+  border-radius: 23px;
   font-size: 14px;
   color: #1a1a1a;
 }
