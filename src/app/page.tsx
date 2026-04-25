@@ -22,22 +22,26 @@ function formatTime(time: string): string {
   return `${hour}:${minute}`;
 }
 
+function getSGTTime(): string {
+  const now = new Date();
+  const sgtMinutes = (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
+  return (
+    Math.floor(sgtMinutes / 60).toString().padStart(2, '0') +
+    (sgtMinutes % 60).toString().padStart(2, '0')
+  );
+}
+
+function parseTime(timeStr: string): number {
+  return parseInt(timeStr.slice(0, 2)) * 60 + parseInt(timeStr.slice(2));
+}
+
 const venueNames = Object.keys(venueToNode).sort();
 
 export default function Home() {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(() => {
-    const now = new Date();
-    const sgtMinutes =
-      (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
-    return (
-      Math.floor(sgtMinutes / 60)
-        .toString()
-        .padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0')
-    );
-  });
+  const [currentTime, setCurrentTime] = useState(getSGTTime);
   const [navFrom, setNavFrom] = useState(venueNames[0] ?? '');
   const [navTo, setNavTo] = useState(venueNames[1] ?? '');
 
@@ -57,7 +61,16 @@ export default function Home() {
     return map;
   }, []);
 
-  // Connector nodes are nodes that appear in edges crossing between two different levels.
+  // Per-level edge lists are stable (edges and levelNodesMap never change after mount)
+  const levelEdgesMap = useMemo(() => {
+    const map = new Map<keyof typeof levelData, typeof edges>();
+    for (const [levelKey, nodeSet] of levelNodesMap) {
+      map.set(levelKey, edges.filter((e) => nodeSet.has(e.from) && nodeSet.has(e.to)));
+    }
+    return map;
+  }, [levelNodesMap]);
+
+  // Connector nodes are nodes in edges that cross between two different levels.
   // A level whose entire path segment consists only of connector nodes is just transit — skip it.
   const connectorNodes = useMemo(() => {
     const levelForNode = new Map<NodeId, string>();
@@ -90,8 +103,6 @@ export default function Home() {
     const ordered = [...firstIndex.keys()].sort(
       (a, b) => firstIndex.get(a)! - firstIndex.get(b)!,
     );
-    // Filter out levels that are purely transit (all path nodes are connectors)
-    // unless that level contains the actual start or end of the route.
     return ordered.filter((levelKey) => {
       const nodeSet = levelNodesMap.get(levelKey)!;
       const levelPath = navResult.path.filter((id) => nodeSet.has(id));
@@ -101,36 +112,22 @@ export default function Home() {
   }, [navResult.path, levelNodesMap, connectorNodes]);
 
   useEffect(() => {
-    const getSGTTime = () => {
-      const now = new Date();
-      const sgtMinutes =
-        (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
-      return (
-        Math.floor(sgtMinutes / 60)
-          .toString()
-          .padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0')
-      );
-    };
     const interval = setInterval(() => setCurrentTime(getSGTTime()), 60000);
     return () => clearInterval(interval);
   }, []);
 
-  const parseTime = (timeStr: string): number => {
-    const hour = parseInt(timeStr.slice(0, 2));
-    const minute = parseInt(timeStr.slice(2));
-    return hour * 60 + minute;
-  };
-
   const currentTimeMinutes = parseTime(currentTime);
 
   let activeIndex = schedule.reduce((lastIndex, item, index) => {
-    const itemTime = parseTime(item.time);
-    return itemTime <= currentTimeMinutes ? index : lastIndex;
+    return parseTime(item.time) <= currentTimeMinutes ? index : lastIndex;
   }, 0);
-
   if (activeIndex === -1) activeIndex = 0;
 
   const upcomingEvents = schedule.slice(activeIndex, activeIndex + 5);
+
+  const globalStart = navResult.path[0];
+  const globalEnd = navResult.path[navResult.path.length - 1];
+  const isMultiLevel = navLevels.length > 1;
 
   return (
     <div className="app-domain">
@@ -218,8 +215,8 @@ export default function Home() {
               {navFrom !== navTo && navResult.path.length === 0 && (
                 <p className="nav-hint">No path found between these locations</p>
               )}
-              {navFrom !== navTo && navResult.path.length > 0 && navLevels.length > 1 && (
-                <p className="nav-hint nav-hint-info">{navLevels.length} floor{navLevels.length > 1 ? 's' : ''} &middot; follow the steps below</p>
+              {navFrom !== navTo && navResult.path.length > 0 && isMultiLevel && (
+                <p className="nav-hint nav-hint-info">{navLevels.length} floors &middot; follow the steps below</p>
               )}
             </div>
             <div className="nav-maps">
@@ -227,15 +224,8 @@ export default function Home() {
                 navLevels.map((levelKey, index) => {
                   const levelInfo = levelData[levelKey];
                   const nodeSet = levelNodesMap.get(levelKey)!;
-                  const levelEdges = edges.filter(
-                    (edge) => nodeSet.has(edge.from) && nodeSet.has(edge.to),
-                  );
-                  const levelPath = navResult.path.filter((id) =>
-                    nodeSet.has(id),
-                  );
-                  const globalStart = navResult.path[0];
-                  const globalEnd = navResult.path[navResult.path.length - 1];
-                  const isMultiLevel = navLevels.length > 1;
+                  const levelEdges = levelEdgesMap.get(levelKey)!;
+                  const levelPath = navResult.path.filter((id) => nodeSet.has(id));
                   const nextLevel = navLevels[index + 1];
                   return (
                     <div key={levelKey} className="nav-map-section">

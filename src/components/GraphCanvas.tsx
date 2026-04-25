@@ -29,12 +29,6 @@ export type GraphCanvasProps = {
   endNodeId?: NodeId;
 };
 
-function edgeKey(a: NodeId, b: NodeId) {
-  const sa = String(a);
-  const sb = String(b);
-  return sa < sb ? `${sa}__${sb}` : `${sb}__${sa}`;
-}
-
 export function GraphCanvas(props: GraphCanvasProps) {
   const {
     nodes,
@@ -96,17 +90,8 @@ export function GraphCanvas(props: GraphCanvasProps) {
     return map;
   }, [layoutNodes]);
 
-  const pathNodeSet = useMemo(() => {
-    return new Set<NodeId>(shortestPath);
-  }, [shortestPath]);
-
-  const pathEdgeSet = useMemo(() => {
-    const set = new Set<string>();
-    for (let i = 0; i < shortestPath.length - 1; i += 1) {
-      set.add(edgeKey(shortestPath[i], shortestPath[i + 1]));
-    }
-    return set;
-  }, [shortestPath]);
+  // Used only in debug mode (showAllNodes with no path)
+  const pathNodeSet = useMemo(() => new Set<NodeId>(shortestPath), [shortestPath]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -132,7 +117,6 @@ export function GraphCanvas(props: GraphCanvasProps) {
       const sy = (y: number) => y * scaleY;
 
       if (showAllEdges) {
-        // Draw all edges in gray (debug/graph view)
         ctx.strokeStyle = "rgba(0,0,0,0.18)";
         ctx.lineWidth = 1.5;
         ctx.setLineDash([4, 4]);
@@ -148,55 +132,48 @@ export function GraphCanvas(props: GraphCanvasProps) {
         ctx.setLineDash([]);
       }
 
-      // Draw path edges
       if (shortestPath.length > 1) {
-        // Outer glow effect on path
+        // Pre-compute scaled segment endpoints once for all three draw passes
+        const segments: Array<[number, number, number, number]> = [];
+        for (let i = 0; i < shortestPath.length - 1; i++) {
+          const from = nodeMap.get(shortestPath[i]);
+          const to = nodeMap.get(shortestPath[i + 1]);
+          if (!from || !to) continue;
+          segments.push([sx(from.x as number), sy(from.y as number), sx(to.x as number), sy(to.y as number)]);
+        }
+
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        // Glow pass
         ctx.strokeStyle = "rgba(37,99,235,0.25)";
         ctx.lineWidth = 9;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
         ctx.beginPath();
-        for (let i = 0; i < shortestPath.length - 1; i++) {
-          const from = nodeMap.get(shortestPath[i]);
-          const to = nodeMap.get(shortestPath[i + 1]);
-          if (!from || !to) continue;
-          ctx.moveTo(sx(from.x as number), sy(from.y as number));
-          ctx.lineTo(sx(to.x as number), sy(to.y as number));
+        for (const [fx, fy, tx, ty] of segments) {
+          ctx.moveTo(fx, fy);
+          ctx.lineTo(tx, ty);
         }
         ctx.stroke();
 
-        // Solid path line
+        // Solid path
         ctx.strokeStyle = "#2563eb";
         ctx.lineWidth = 3.5;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
         ctx.beginPath();
-        for (let i = 0; i < shortestPath.length - 1; i++) {
-          const from = nodeMap.get(shortestPath[i]);
-          const to = nodeMap.get(shortestPath[i + 1]);
-          if (!from || !to) continue;
-          ctx.moveTo(sx(from.x as number), sy(from.y as number));
-          ctx.lineTo(sx(to.x as number), sy(to.y as number));
+        for (const [fx, fy, tx, ty] of segments) {
+          ctx.moveTo(fx, fy);
+          ctx.lineTo(tx, ty);
         }
         ctx.stroke();
 
-        // Directional arrows at midpoints of each path segment
+        // Directional arrows — white chevrons at 60% along each segment
         const arrowSize = 11;
         const arrowAngle = Math.PI / 5;
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 2.5;
-        ctx.lineCap = "round";
-        for (let i = 0; i < shortestPath.length - 1; i++) {
-          const from = nodeMap.get(shortestPath[i]);
-          const to = nodeMap.get(shortestPath[i + 1]);
-          if (!from || !to) continue;
-          const fx = sx(from.x as number), fy = sy(from.y as number);
-          const tx = sx(to.x as number), ty = sy(to.y as number);
+        for (const [fx, fy, tx, ty] of segments) {
           const segLen = Math.sqrt((tx - fx) ** 2 + (ty - fy) ** 2);
-          // Only draw arrow if segment is long enough
           if (segLen < 20) continue;
           const angle = Math.atan2(ty - fy, tx - fx);
-          // Place arrow tip at 60% along the segment
           const mx = fx + (tx - fx) * 0.6;
           const my = fy + (ty - fy) * 0.6;
           ctx.beginPath();
@@ -208,22 +185,17 @@ export function GraphCanvas(props: GraphCanvasProps) {
         }
       }
 
-      // Draw nodes (debug mode) or just start/end markers
       if (showAllNodes && pathNodeSet.size === 0) {
-        // Debug: show all nodes as small dots
         ctx.font = "12px sans-serif";
         ctx.textBaseline = "middle";
         for (const node of layoutNodes) {
-          const nx = sx(node.x as number);
-          const ny = sy(node.y as number);
           ctx.fillStyle = "#6b7280";
           ctx.beginPath();
-          ctx.arc(nx, ny, 4, 0, Math.PI * 2);
+          ctx.arc(sx(node.x as number), sy(node.y as number), 4, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
-      // Draw start and end markers
       if (startNodeId || endNodeId) {
         const drawPin = (nodeId: NodeId, isStart: boolean) => {
           const node = nodeMap.get(nodeId);
@@ -233,34 +205,31 @@ export function GraphCanvas(props: GraphCanvasProps) {
           const color = isStart ? "#16a34a" : "#dc2626";
           const label = isStart ? "Start" : "End";
 
-          // Drop shadow
           ctx.shadowColor = "rgba(0,0,0,0.3)";
           ctx.shadowBlur = 8;
           ctx.shadowOffsetX = 0;
           ctx.shadowOffsetY = 2;
 
-          // Outer ring
           ctx.fillStyle = "#ffffff";
           ctx.beginPath();
           ctx.arc(nx, ny, 13, 0, Math.PI * 2);
           ctx.fill();
 
-          // Colored circle
           ctx.fillStyle = color;
           ctx.beginPath();
           ctx.arc(nx, ny, 10, 0, Math.PI * 2);
           ctx.fill();
 
-          // Inner dot
           ctx.fillStyle = "#ffffff";
           ctx.beginPath();
           ctx.arc(nx, ny, 4, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.shadowColor = "transparent";
-          ctx.shadowBlur = 0;
+          // Reset before pill (pill uses its own lighter shadow)
+          ctx.shadowOffsetY = 0;
+          ctx.shadowColor = "rgba(0,0,0,0.2)";
+          ctx.shadowBlur = 6;
 
-          // Label pill
           ctx.font = "bold 12px sans-serif";
           const textW = ctx.measureText(label).width;
           const pad = 6;
@@ -268,10 +237,6 @@ export function GraphCanvas(props: GraphCanvasProps) {
           const pillH = 20;
           const lx = nx - pillW / 2;
           const ly = ny - 32;
-
-          // Pill shadow
-          ctx.shadowColor = "rgba(0,0,0,0.2)";
-          ctx.shadowBlur = 6;
 
           ctx.fillStyle = color;
           ctx.beginPath();
@@ -304,7 +269,7 @@ export function GraphCanvas(props: GraphCanvasProps) {
     return () => {
       cancelled = true;
     };
-  }, [edges, layoutNodes, nodeMap, pathEdgeSet, pathNodeSet, shortestPath, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId, showAllEdges, showAllNodes]);
+  }, [edges, layoutNodes, nodeMap, pathNodeSet, shortestPath, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId, showAllEdges, showAllNodes]);
 
   return (
     <canvas
