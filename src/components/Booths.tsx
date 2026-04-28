@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapLocationDot,
@@ -84,6 +84,17 @@ interface BoothsProps {
 export function Booths({ onClose, onNavigate }: BoothsProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBooth, setSelectedBooth] = useState<Booth | null>(null);
+  const [showJohari, setShowJohari] = useState(false);
+  const [showWan, setShowWan] = useState(false);
+
+  useEffect(() => {
+    if (searchQuery.trim().toLowerCase() === 'johari') {
+      setShowJohari(true);
+    }
+    if (searchQuery.trim().toLowerCase() === 'wan') {
+      setShowWan(true);
+    }
+  }, [searchQuery]);
 
   const filteredBooths = booths.filter(
     (booth) =>
@@ -143,6 +154,45 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
 
       {selectedBooth && (
         <BoothDetail booth={selectedBooth} onClose={() => setSelectedBooth(null)} onNavigate={onNavigate} />
+      )}
+
+      {showJohari && (
+        <div
+          className="booth-detail-overlay johari-easter-egg-overlay"
+          onClick={() => setShowJohari(false)}
+        >
+          <img
+            src="/johari.png"
+            alt="Johari"
+            className="johari-easter-egg-image"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            className="booth-detail-close johari-easter-egg-close"
+            onClick={() => setShowJohari(false)}
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+        </div>
+      )}
+      {showWan && (
+        <div
+          className="booth-detail-overlay johari-easter-egg-overlay"
+          onClick={() => setShowWan(false)}
+        >
+          <img
+            src="/wan.jpg"
+            alt="Johari"
+            className="johari-easter-egg-image"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            className="booth-detail-close johari-easter-egg-close"
+            onClick={() => setShowWan(false)}
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+        </div>
       )}
     </>
   );
