@@ -24,10 +24,12 @@ function formatTime(time: string): string {
 
 function getSGTTime(): string {
   const now = new Date();
-  const sgtMinutes = (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
+  const sgtMinutes =
+    (now.getUTCHours() * 60 + now.getUTCMinutes() + 8 * 60) % (24 * 60);
   return (
-    Math.floor(sgtMinutes / 60).toString().padStart(2, '0') +
-    (sgtMinutes % 60).toString().padStart(2, '0')
+    Math.floor(sgtMinutes / 60)
+      .toString()
+      .padStart(2, '0') + (sgtMinutes % 60).toString().padStart(2, '0')
   );
 }
 
@@ -65,7 +67,10 @@ export default function Home() {
   const levelEdgesMap = useMemo(() => {
     const map = new Map<keyof typeof levelData, typeof edges>();
     for (const [levelKey, nodeSet] of levelNodesMap) {
-      map.set(levelKey, edges.filter((e) => nodeSet.has(e.from) && nodeSet.has(e.to)));
+      map.set(
+        levelKey,
+        edges.filter((e) => nodeSet.has(e.from) && nodeSet.has(e.to)),
+      );
     }
     return map;
   }, [levelNodesMap]);
@@ -106,7 +111,8 @@ export default function Home() {
     return ordered.filter((levelKey) => {
       const nodeSet = levelNodesMap.get(levelKey)!;
       const levelPath = navResult.path.filter((id) => nodeSet.has(id));
-      if (levelPath.includes(globalStart) || levelPath.includes(globalEnd)) return true;
+      if (levelPath.includes(globalStart) || levelPath.includes(globalEnd))
+        return true;
       return levelPath.some((id) => !connectorNodes.has(id));
     });
   }, [navResult.path, levelNodesMap, connectorNodes]);
@@ -146,16 +152,13 @@ export default function Home() {
           )}
         </div>
         {!isHeaderExpanded && (
-          <button
-            className="nav-cta"
-            onClick={() => setIsHeaderExpanded(true)}
-          >
+          <button className="nav-cta" onClick={() => setIsHeaderExpanded(true)}>
             <div className="nav-cta-icon">
               <FontAwesomeIcon icon={faMapLocationDot} />
             </div>
             <div className="nav-cta-text">
               <span className="nav-cta-title">Get Directions</span>
-              <span className="nav-cta-sub">Tap to navigate around campus</span>
+              <span className="nav-cta-sub">Tap to navigate around SST</span>
             </div>
             <FontAwesomeIcon icon={faArrowRight} className="nav-cta-arrow" />
           </button>
@@ -213,11 +216,17 @@ export default function Home() {
                 <p className="nav-hint">Choose two different locations</p>
               )}
               {navFrom !== navTo && navResult.path.length === 0 && (
-                <p className="nav-hint">No path found between these locations</p>
+                <p className="nav-hint">
+                  No path found between these locations
+                </p>
               )}
-              {navFrom !== navTo && navResult.path.length > 0 && isMultiLevel && (
-                <p className="nav-hint nav-hint-info">{navLevels.length} floors &middot; follow the steps below</p>
-              )}
+              {navFrom !== navTo &&
+                navResult.path.length > 0 &&
+                isMultiLevel && (
+                  <p className="nav-hint nav-hint-info">
+                    {navLevels.length} floors &middot; follow the steps below
+                  </p>
+                )}
             </div>
             <div className="nav-maps">
               {navResult.path.length > 0 &&
@@ -225,13 +234,17 @@ export default function Home() {
                   const levelInfo = levelData[levelKey];
                   const nodeSet = levelNodesMap.get(levelKey)!;
                   const levelEdges = levelEdgesMap.get(levelKey)!;
-                  const levelPath = navResult.path.filter((id) => nodeSet.has(id));
+                  const levelPath = navResult.path.filter((id) =>
+                    nodeSet.has(id),
+                  );
                   const nextLevel = navLevels[index + 1];
                   return (
                     <div key={levelKey} className="nav-map-section">
                       <div className="nav-map-header">
                         {isMultiLevel && (
-                          <span className="nav-step-badge">Step {index + 1}</span>
+                          <span className="nav-step-badge">
+                            Step {index + 1}
+                          </span>
                         )}
                         <h4 className="nav-map-label">{levelKey}</h4>
                       </div>
@@ -245,14 +258,23 @@ export default function Home() {
                           height={600}
                           showAllEdges={false}
                           showAllNodes={false}
-                          startNodeId={nodeSet.has(globalStart) ? globalStart : undefined}
-                          endNodeId={nodeSet.has(globalEnd) ? globalEnd : undefined}
+                          startNodeId={
+                            nodeSet.has(globalStart) ? globalStart : undefined
+                          }
+                          endNodeId={
+                            nodeSet.has(globalEnd) ? globalEnd : undefined
+                          }
                         />
                       </div>
                       {nextLevel && (
                         <div className="nav-level-transition">
-                          <FontAwesomeIcon icon={faArrowRight} className="nav-transition-arrow" />
-                          <span>Head to <strong>{nextLevel}</strong></span>
+                          <FontAwesomeIcon
+                            icon={faArrowRight}
+                            className="nav-transition-arrow"
+                          />
+                          <span>
+                            Head to <strong>{nextLevel}</strong>
+                          </span>
                         </div>
                       )}
                     </div>
