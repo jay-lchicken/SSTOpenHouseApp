@@ -44,7 +44,7 @@ export default function Home() {
   const [isEventsPopupOpen, setIsEventsPopupOpen] = useState(false);
   const [isSchedulePopupOpen, setIsSchedulePopupOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(getSGTTime);
-  const [navFrom, setNavFrom] = useState(venueNames[0] ?? '');
+  const [navFrom, setNavFrom] = useState(venueNames[7] ?? '');
   const [navTo, setNavTo] = useState(venueNames[1] ?? '');
 
   const navResult = useMemo(() => {
@@ -347,7 +347,7 @@ export default function Home() {
           </div>
         </div>
         <p className="credits">
-          Made by Hong Yu & Leung Yin of S304 NOT ASSOCIATED WITH SSTINC
+          Made by Hong Yu & Leung Yin of S304
         </p>
       </main>
       {isEventsPopupOpen && (

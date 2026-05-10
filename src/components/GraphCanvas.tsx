@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 export type NodeId = string;
 
@@ -45,6 +46,12 @@ export function GraphCanvas(props: GraphCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasWidth = width ?? 800;
   const canvasHeight = height ?? 600;
+  const clickMeRectRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
+  const [showClickMePopup, setShowClickMePopup] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const layoutNodes = useMemo(() => {
     const ordered: Node[] = [];
@@ -157,7 +164,7 @@ export function GraphCanvas(props: GraphCanvasProps) {
 
         // Solid path
         ctx.strokeStyle = "#2563eb";
-        ctx.lineWidth = 3.5;
+        ctx.lineWidth = 6;
         ctx.beginPath();
         for (const [fx, fy, tx, ty] of segments) {
           ctx.moveTo(fx, fy);
@@ -166,10 +173,10 @@ export function GraphCanvas(props: GraphCanvasProps) {
         ctx.stroke();
 
         // Directional arrows — white chevrons at 60% along each segment
-        const arrowSize = 11;
+        const arrowSize = 18;
         const arrowAngle = Math.PI / 5;
         ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 4;
         for (const [fx, fy, tx, ty] of segments) {
           const segLen = Math.sqrt((tx - fx) ** 2 + (ty - fy) ** 2);
           if (segLen < 20) continue;
@@ -256,6 +263,51 @@ export function GraphCanvas(props: GraphCanvasProps) {
         if (startNodeId) drawPin(startNodeId, true);
         if (endNodeId) drawPin(endNodeId, false);
       }
+
+      // "Click me" button at node 24 (Level 1 only)
+      const node24 = nodeMap.get("24");
+      if (node24 && Number.isFinite(node24.x) && Number.isFinite(node24.y)) {
+        const nx = sx(node24.x as number);
+        const ny = sy(node24.y as number);
+        ctx.font = "bold 13px sans-serif";
+        const label = "Click me for layout";
+        const textW = ctx.measureText(label).width;
+        const padX = 12;
+        const w = textW + padX * 2;
+        const h = 28;
+        const x = nx - w / 2;
+        const y = ny - h - 14;
+
+        clickMeRectRef.current = { x, y, w, h };
+
+        ctx.shadowColor = "rgba(0,0,0,0.25)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 14);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowColor = "transparent";
+
+        ctx.fillStyle = "#ffffff";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText(label, nx, y + h / 2);
+        ctx.textAlign = "left";
+
+        // Pointer tail down to node
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.moveTo(nx - 6, y + h);
+        ctx.lineTo(nx + 6, y + h);
+        ctx.lineTo(nx, y + h + 6);
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        clickMeRectRef.current = null;
+      }
     };
 
     if (!mapSrc) {
@@ -271,12 +323,115 @@ export function GraphCanvas(props: GraphCanvasProps) {
     };
   }, [edges, layoutNodes, nodeMap, pathNodeSet, shortestPath, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId, showAllEdges, showAllNodes]);
 
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const rect = clickMeRectRef.current;
+    const canvas = canvasRef.current;
+    if (!rect || !canvas) return;
+    const bounds = canvas.getBoundingClientRect();
+    const cx = ((e.clientX - bounds.left) / bounds.width) * canvas.width;
+    const cy = ((e.clientY - bounds.top) / bounds.height) * canvas.height;
+    if (cx >= rect.x && cx <= rect.x + rect.w && cy >= rect.y && cy <= rect.y + rect.h) {
+      setShowClickMePopup(true);
+    }
+  };
+
   return (
-    <canvas
-      ref={canvasRef}
-      width={canvasWidth}
-      height={canvasHeight}
-      style={{ border: "1px solid #e5e7eb" }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+        onClick={handleCanvasClick}
+        style={{ border: "1px solid #e5e7eb", cursor: "pointer" }}
+      />
+      {showClickMePopup && mounted && createPortal(
+        <div
+          onClick={() => setShowClickMePopup(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(15, 23, 42, 0.55)",
+            backdropFilter: "blur(14px) saturate(160%)",
+            WebkitBackdropFilter: "blur(14px) saturate(160%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            cursor: "zoom-out",
+            padding: 24,
+            animation: "clickMeFadeIn 220ms ease-out",
+          }}
+        >
+          <style>{`
+            @keyframes clickMeFadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes clickMePopIn {
+              from { opacity: 0; transform: scale(0.94) translateY(8px); }
+              to { opacity: 1; transform: scale(1) translateY(0); }
+            }
+          `}</style>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              padding: 14,
+              borderRadius: 28,
+              background: "rgba(255, 255, 255, 0.18)",
+              backdropFilter: "blur(24px) saturate(180%)",
+              WebkitBackdropFilter: "blur(24px) saturate(180%)",
+              border: "1px solid rgba(255, 255, 255, 0.35)",
+              boxShadow:
+                "0 24px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
+              maxWidth: "92vw",
+              maxHeight: "92vh",
+              animation: "clickMePopIn 280ms cubic-bezier(0.22, 1, 0.36, 1)",
+              cursor: "default",
+            }}
+          >
+            <button
+              onClick={() => setShowClickMePopup(false)}
+              aria-label="Close"
+              style={{
+                position: "absolute",
+                top: -10,
+                right: -10,
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                border: "1px solid rgba(255,255,255,0.5)",
+                background: "rgba(255,255,255,0.85)",
+                backdropFilter: "blur(10px)",
+                color: "#0f172a",
+                fontSize: 18,
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+                lineHeight: 1,
+                padding: 0,
+              }}
+            >
+              ×
+            </button>
+            <img
+              src="/layout.jpg"
+              alt="Layout"
+              style={{
+                display: "block",
+                maxWidth: "calc(92vw - 28px)",
+                maxHeight: "calc(92vh - 28px)",
+                borderRadius: 18,
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
+              }}
+            />
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
