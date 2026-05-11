@@ -239,7 +239,7 @@ export default function Home() {
                   );
                   const nextLevel = navLevels[index + 1];
                   return (
-                    <div key={levelKey} className="nav-map-section">
+                    <div key={`${navFrom}->${navTo}-${levelKey}`} className="nav-map-section">
                       <div className="nav-map-header">
                         {isMultiLevel && (
                           <span className="nav-step-badge">

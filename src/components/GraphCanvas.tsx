@@ -48,10 +48,20 @@ export function GraphCanvas(props: GraphCanvasProps) {
   const canvasHeight = height ?? 600;
   const clickMeRectRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const [showClickMePopup, setShowClickMePopup] = useState(false);
+  const [popupClosing, setPopupClosing] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const closeClickMePopup = () => {
+    if (popupClosing) return;
+    setPopupClosing(true);
+    setTimeout(() => {
+      setShowClickMePopup(false);
+      setPopupClosing(false);
+    }, 360);
+  };
 
   const layoutNodes = useMemo(() => {
     const ordered: Node[] = [];
@@ -346,88 +356,19 @@ export function GraphCanvas(props: GraphCanvasProps) {
       />
       {showClickMePopup && mounted && createPortal(
         <div
-          onClick={() => setShowClickMePopup(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(15, 23, 42, 0.55)",
-            backdropFilter: "blur(14px) saturate(160%)",
-            WebkitBackdropFilter: "blur(14px) saturate(160%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-            cursor: "zoom-out",
-            padding: 24,
-            animation: "clickMeFadeIn 220ms ease-out",
-          }}
+          className={`clickme-overlay ${popupClosing ? "closing" : ""}`}
+          onClick={closeClickMePopup}
         >
-          <style>{`
-            @keyframes clickMeFadeIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes clickMePopIn {
-              from { opacity: 0; transform: scale(0.94) translateY(8px); }
-              to { opacity: 1; transform: scale(1) translateY(0); }
-            }
-          `}</style>
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              position: "relative",
-              padding: 14,
-              borderRadius: 28,
-              background: "rgba(255, 255, 255, 0.18)",
-              backdropFilter: "blur(24px) saturate(180%)",
-              WebkitBackdropFilter: "blur(24px) saturate(180%)",
-              border: "1px solid rgba(255, 255, 255, 0.35)",
-              boxShadow:
-                "0 24px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-              maxWidth: "92vw",
-              maxHeight: "92vh",
-              animation: "clickMePopIn 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-              cursor: "default",
-            }}
-          >
+          <div className="clickme-card" onClick={(e) => e.stopPropagation()}>
             <button
-              onClick={() => setShowClickMePopup(false)}
+              type="button"
+              onClick={closeClickMePopup}
               aria-label="Close"
-              style={{
-                position: "absolute",
-                top: -10,
-                right: -10,
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                border: "1px solid rgba(255,255,255,0.5)",
-                background: "rgba(255,255,255,0.85)",
-                backdropFilter: "blur(10px)",
-                color: "#0f172a",
-                fontSize: 18,
-                fontWeight: 600,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
-                lineHeight: 1,
-                padding: 0,
-              }}
+              className="clickme-close"
             >
               ×
             </button>
-            <img
-              src="/layout.jpg"
-              alt="Layout"
-              style={{
-                display: "block",
-                maxWidth: "calc(92vw - 28px)",
-                maxHeight: "calc(92vh - 28px)",
-                borderRadius: 18,
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
-              }}
-            />
+            <img src="/layout.jpg" alt="Layout" className="clickme-image" />
           </div>
         </div>,
         document.body

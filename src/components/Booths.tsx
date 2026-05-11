@@ -28,12 +28,21 @@ interface BoothDetailProps {
 
 function BoothDetail({ booth, onClose, onNavigate }: BoothDetailProps) {
   const isNavigable = booth.venue in venueToNode;
+  const [closing, setClosing] = useState(false);
+  const requestClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(onClose, 360);
+  };
   return (
-    <div className="booth-detail-overlay" onClick={onClose}>
+    <div
+      className={`booth-detail-overlay ${closing ? 'closing' : ''}`}
+      onClick={requestClose}
+    >
       <div className="booth-detail-card" onClick={(e) => e.stopPropagation()}>
         <div className="booth-detail-image-wrap">
           <img className="booth-detail-image" src={booth.image} alt={booth.name} />
-          <button className="booth-detail-close" onClick={onClose}>
+          <button className="booth-detail-close" onClick={requestClose}>
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>
@@ -86,6 +95,23 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
   const [selectedBooth, setSelectedBooth] = useState<Booth | null>(null);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [easterId, setEasterId] = useState('');
+  const [closing, setClosing] = useState(false);
+  const [easterClosing, setEasterClosing] = useState(false);
+
+  const requestClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(onClose, 360);
+  };
+
+  const closeEaster = () => {
+    if (easterClosing) return;
+    setEasterClosing(true);
+    setTimeout(() => {
+      setShowEasterEgg(false);
+      setEasterClosing(false);
+    }, 360);
+  };
 
   useEffect(() => {
     if (searchQuery.trim().toLowerCase() === 'johari') {
@@ -111,11 +137,11 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
 
   return (
     <>
-      <div className="popup-overlay">
+      <div className={`popup-overlay ${closing ? 'closing' : ''}`}>
         <div className="popup-content">
           <div className="popup-header mx">
             <h2>Booths & Programmes</h2>
-            <button className="popup-close-button" onClick={onClose}>
+            <button className="popup-close-button" onClick={requestClose}>
               <FontAwesomeIcon icon={faXmark} />
             </button>
           </div>
@@ -164,8 +190,8 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
 
       {showEasterEgg && (
         <div
-          className="booth-detail-overlay johari-easter-egg-overlay"
-          onClick={() => setShowEasterEgg(false)}
+          className={`booth-detail-overlay johari-easter-egg-overlay ${easterClosing ? 'closing' : ''}`}
+          onClick={closeEaster}
         >
           <img
             src={easterId}
@@ -175,7 +201,7 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
           />
           <button
             className="booth-detail-close johari-easter-egg-close"
-            onClick={() => setShowEasterEgg(false)}
+            onClick={closeEaster}
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>

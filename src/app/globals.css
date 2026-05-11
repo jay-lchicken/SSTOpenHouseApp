@@ -12,6 +12,14 @@ code {
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+:root {
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-sm: 220ms;
+  --motion-md: 360ms;
+  --motion-lg: 480ms;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -718,9 +726,10 @@ header {
 header.header-expandable {
   position: relative;
   z-index: 100;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--motion-md) var(--ease-spring);
   flex-direction: column;
   overflow: hidden;
+  will-change: transform, border-radius;
 }
 
 header.header-expandable.expanded {
@@ -752,19 +761,22 @@ body:has(header.header-expandable.expanded) {
 .header-expanded-content {
   width: 100%;
   opacity: 0;
-  transform: scale(0.95);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.96) translateY(-6px);
+  transition:
+    opacity var(--motion-md) var(--ease-spring),
+    transform var(--motion-md) var(--ease-spring);
   pointer-events: none;
   padding: 15px;
   flex: 1;
   display: none;
   flex-direction: column;
+  will-change: transform, opacity;
 }
 
 header.header-expandable.expanded .header-expanded-content {
   display: flex;
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) translateY(0);
   pointer-events: auto;
 }
 
@@ -911,6 +923,10 @@ header::before {
   background: rgba(255, 255, 255, 0.35);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.header-button:active {
+  transform: scale(0.9);
+  transition: transform 120ms var(--ease-spring);
 }
 .FontAwesomeIcon {
   background: none;
@@ -1169,7 +1185,7 @@ header::before {
   justify-content: center;
   z-index: 2000;
   padding: 15px;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn var(--motion-md) var(--ease-out-soft);
 }
 
 .popup-content {
@@ -1189,7 +1205,7 @@ header::before {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideUp var(--motion-md) var(--ease-spring);
 }
 
 .popup-content::before {
@@ -1374,6 +1390,29 @@ body:has(.popup-overlay) {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+}
+
+.popup-overlay.closing {
+  animation: fadeOut var(--motion-md) var(--ease-spring) both;
+}
+.popup-overlay.closing .popup-content {
+  animation: slideDown var(--motion-md) var(--ease-spring) both;
 }
 
 /* Event Cards Grid */
@@ -1799,6 +1838,23 @@ p .event-description {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  animation: navMapEnter var(--motion-md) var(--ease-spring) both;
+}
+
+.nav-map-section:nth-child(2) { animation-delay: 60ms; }
+.nav-map-section:nth-child(3) { animation-delay: 120ms; }
+.nav-map-section:nth-child(4) { animation-delay: 180ms; }
+.nav-map-section:nth-child(5) { animation-delay: 240ms; }
+
+@keyframes navMapEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .nav-map-header {
@@ -1868,6 +1924,99 @@ p .event-description {
   display: block;
 }
 
+/* Click-me popup (canvas overlay) */
+.clickme-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  cursor: zoom-out;
+  padding: 24px;
+  animation: clickMeFadeIn var(--motion-md) var(--ease-spring) both;
+}
+.clickme-overlay.closing {
+  animation: clickMeFadeOut var(--motion-md) var(--ease-spring) both;
+}
+
+.clickme-card {
+  position: relative;
+  padding: 14px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  max-width: 92vw;
+  max-height: 92vh;
+  cursor: default;
+  animation: clickMePopIn var(--motion-md) var(--ease-spring) both;
+}
+.clickme-overlay.closing .clickme-card {
+  animation: clickMePopOut var(--motion-md) var(--ease-spring) both;
+}
+
+.clickme-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  line-height: 1;
+  padding: 0;
+  transition: transform 160ms var(--ease-spring), background 160ms ease;
+}
+.clickme-close:hover {
+  background: rgba(255, 255, 255, 1);
+}
+.clickme-close:active {
+  transform: scale(0.88);
+}
+
+.clickme-image {
+  display: block;
+  max-width: calc(92vw - 28px);
+  max-height: calc(92vh - 28px);
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes clickMeFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes clickMeFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes clickMePopIn {
+  from { opacity: 0; transform: scale(0.92) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes clickMePopOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.94) translateY(6px); }
+}
+
 /* Booth detail popup */
 .booth-detail-overlay {
   position: fixed;
@@ -1880,7 +2029,11 @@ p .event-description {
   background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  animation: fadeIn 0.25s ease;
+  animation: fadeIn var(--motion-md) var(--ease-out-soft);
+}
+
+.booth-detail-overlay.closing {
+  animation: fadeOut var(--motion-md) var(--ease-spring) both;
 }
 
 .booth-detail-card {
@@ -1896,7 +2049,33 @@ p .event-description {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: detailPopIn var(--motion-md) var(--ease-spring);
+}
+
+.booth-detail-overlay.closing .booth-detail-card {
+  animation: detailPopOut var(--motion-md) var(--ease-spring) both;
+}
+
+@keyframes detailPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes detailPopOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
 }
 
 .booth-detail-image-wrap {

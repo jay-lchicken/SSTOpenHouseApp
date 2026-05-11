@@ -40,8 +40,14 @@ interface ScheduleProps {
 
 export function Schedule({ onClose }: ScheduleProps) {
   const [currentTime, setCurrentTime] = useState(getCurrentTime);
-    const activeIndex = getActiveIndex(currentTime);
+  const [closing, setClosing] = useState(false);
+  const activeIndex = getActiveIndex(currentTime);
 
+  const requestClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(onClose, 360);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(getCurrentTime()), 60000);
@@ -51,13 +57,13 @@ export function Schedule({ onClose }: ScheduleProps) {
 
 
   return (
-    <div className="popup-overlay">
+    <div className={`popup-overlay ${closing ? 'closing' : ''}`}>
       <div className="popup-content">
         <div className="popup-header">
           <h2>Event Schedule</h2>
           <button
             className="popup-close-button"
-            onClick={onClose}
+            onClick={requestClose}
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
