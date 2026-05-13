@@ -28,12 +28,21 @@ interface BoothDetailProps {
 
 function BoothDetail({ booth, onClose, onNavigate }: BoothDetailProps) {
   const isNavigable = booth.venue in venueToNode;
+  const [closing, setClosing] = useState(false);
+  const requestClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(onClose, 360);
+  };
   return (
-    <div className="booth-detail-overlay" onClick={onClose}>
+    <div
+      className={`booth-detail-overlay ${closing ? 'closing' : ''}`}
+      onClick={requestClose}
+    >
       <div className="booth-detail-card" onClick={(e) => e.stopPropagation()}>
         <div className="booth-detail-image-wrap">
           <img className="booth-detail-image" src={booth.image} alt={booth.name} />
-          <button className="booth-detail-close" onClick={onClose}>
+          <button className="booth-detail-close" onClick={requestClose}>
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>
@@ -84,15 +93,38 @@ interface BoothsProps {
 export function Booths({ onClose, onNavigate }: BoothsProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBooth, setSelectedBooth] = useState<Booth | null>(null);
-  const [showJohari, setShowJohari] = useState(false);
-  const [showWan, setShowWan] = useState(false);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [easterId, setEasterId] = useState('');
+  const [closing, setClosing] = useState(false);
+  const [easterClosing, setEasterClosing] = useState(false);
+
+  const requestClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(onClose, 360);
+  };
+
+  const closeEaster = () => {
+    if (easterClosing) return;
+    setEasterClosing(true);
+    setTimeout(() => {
+      setShowEasterEgg(false);
+      setEasterClosing(false);
+    }, 360);
+  };
 
   useEffect(() => {
     if (searchQuery.trim().toLowerCase() === 'johari') {
-      setShowJohari(true);
+      setShowEasterEgg(true);
+      setEasterId('johari.png');
+    }
+    if (searchQuery.trim().toLowerCase() === 'chok') {
+      setShowEasterEgg(true);
+      setEasterId('chok.png');
     }
     if (searchQuery.trim().toLowerCase() === 'wan') {
-      setShowWan(true);
+      setShowEasterEgg(true);
+      setEasterId('wan.jpg');
     }
   }, [searchQuery]);
 
@@ -105,11 +137,11 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
 
   return (
     <>
-      <div className="popup-overlay">
+      <div className={`popup-overlay ${closing ? 'closing' : ''}`}>
         <div className="popup-content">
           <div className="popup-header mx">
             <h2>Booths & Programmes</h2>
-            <button className="popup-close-button" onClick={onClose}>
+            <button className="popup-close-button" onClick={requestClose}>
               <FontAwesomeIcon icon={faXmark} />
             </button>
           </div>
@@ -156,44 +188,26 @@ export function Booths({ onClose, onNavigate }: BoothsProps) {
         <BoothDetail booth={selectedBooth} onClose={() => setSelectedBooth(null)} onNavigate={onNavigate} />
       )}
 
-      {showJohari && (
+      {showEasterEgg && (
         <div
-          className="booth-detail-overlay johari-easter-egg-overlay"
-          onClick={() => setShowJohari(false)}
+          className={`booth-detail-overlay johari-easter-egg-overlay ${easterClosing ? 'closing' : ''}`}
+          onClick={closeEaster}
         >
           <img
-            src="/johari.png"
+            src={easterId}
             alt="Johari"
             className="johari-easter-egg-image"
             onClick={(e) => e.stopPropagation()}
           />
           <button
             className="booth-detail-close johari-easter-egg-close"
-            onClick={() => setShowJohari(false)}
+            onClick={closeEaster}
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>
       )}
-      {showWan && (
-        <div
-          className="booth-detail-overlay johari-easter-egg-overlay"
-          onClick={() => setShowWan(false)}
-        >
-          <img
-            src="/wan.jpg"
-            alt="Johari"
-            className="johari-easter-egg-image"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <button
-            className="booth-detail-close johari-easter-egg-close"
-            onClick={() => setShowWan(false)}
-          >
-            <FontAwesomeIcon icon={faXmark} />
-          </button>
-        </div>
-      )}
+
     </>
   );
 }

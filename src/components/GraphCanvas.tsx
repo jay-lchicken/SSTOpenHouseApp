@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 export type NodeId = string;
 
@@ -45,6 +46,22 @@ export function GraphCanvas(props: GraphCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasWidth = width ?? 800;
   const canvasHeight = height ?? 600;
+  const clickMeRectRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
+  const [showClickMePopup, setShowClickMePopup] = useState(false);
+  const [popupClosing, setPopupClosing] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const closeClickMePopup = () => {
+    if (popupClosing) return;
+    setPopupClosing(true);
+    setTimeout(() => {
+      setShowClickMePopup(false);
+      setPopupClosing(false);
+    }, 360);
+  };
 
   const layoutNodes = useMemo(() => {
     const ordered: Node[] = [];
@@ -157,7 +174,7 @@ export function GraphCanvas(props: GraphCanvasProps) {
 
         // Solid path
         ctx.strokeStyle = "#2563eb";
-        ctx.lineWidth = 3.5;
+        ctx.lineWidth = 6;
         ctx.beginPath();
         for (const [fx, fy, tx, ty] of segments) {
           ctx.moveTo(fx, fy);
@@ -166,10 +183,10 @@ export function GraphCanvas(props: GraphCanvasProps) {
         ctx.stroke();
 
         // Directional arrows — white chevrons at 60% along each segment
-        const arrowSize = 11;
+        const arrowSize = 18;
         const arrowAngle = Math.PI / 5;
         ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 4;
         for (const [fx, fy, tx, ty] of segments) {
           const segLen = Math.sqrt((tx - fx) ** 2 + (ty - fy) ** 2);
           if (segLen < 20) continue;
@@ -256,6 +273,51 @@ export function GraphCanvas(props: GraphCanvasProps) {
         if (startNodeId) drawPin(startNodeId, true);
         if (endNodeId) drawPin(endNodeId, false);
       }
+
+      // "Click me" button at node 24 (Level 1 only)
+      const node24 = nodeMap.get("24");
+      if (node24 && Number.isFinite(node24.x) && Number.isFinite(node24.y)) {
+        const nx = sx(node24.x as number);
+        const ny = sy(node24.y as number);
+        ctx.font = "bold 13px sans-serif";
+        const label = "Click me for layout";
+        const textW = ctx.measureText(label).width;
+        const padX = 12;
+        const w = textW + padX * 2;
+        const h = 28;
+        const x = nx - w / 2;
+        const y = ny - h - 14;
+
+        clickMeRectRef.current = { x, y, w, h };
+
+        ctx.shadowColor = "rgba(0,0,0,0.25)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 14);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowColor = "transparent";
+
+        ctx.fillStyle = "#ffffff";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText(label, nx, y + h / 2);
+        ctx.textAlign = "left";
+
+        // Pointer tail down to node
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.moveTo(nx - 6, y + h);
+        ctx.lineTo(nx + 6, y + h);
+        ctx.lineTo(nx, y + h + 6);
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        clickMeRectRef.current = null;
+      }
     };
 
     if (!mapSrc) {
@@ -271,12 +333,46 @@ export function GraphCanvas(props: GraphCanvasProps) {
     };
   }, [edges, layoutNodes, nodeMap, pathNodeSet, shortestPath, mapSrc, canvasWidth, canvasHeight, startNodeId, endNodeId, showAllEdges, showAllNodes]);
 
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const rect = clickMeRectRef.current;
+    const canvas = canvasRef.current;
+    if (!rect || !canvas) return;
+    const bounds = canvas.getBoundingClientRect();
+    const cx = ((e.clientX - bounds.left) / bounds.width) * canvas.width;
+    const cy = ((e.clientY - bounds.top) / bounds.height) * canvas.height;
+    if (cx >= rect.x && cx <= rect.x + rect.w && cy >= rect.y && cy <= rect.y + rect.h) {
+      setShowClickMePopup(true);
+    }
+  };
+
   return (
-    <canvas
-      ref={canvasRef}
-      width={canvasWidth}
-      height={canvasHeight}
-      style={{ border: "1px solid #e5e7eb" }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+        onClick={handleCanvasClick}
+        style={{ border: "1px solid #e5e7eb", cursor: "pointer" }}
+      />
+      {showClickMePopup && mounted && createPortal(
+        <div
+          className={`clickme-overlay ${popupClosing ? "closing" : ""}`}
+          onClick={closeClickMePopup}
+        >
+          <div className="clickme-card" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={closeClickMePopup}
+              aria-label="Close"
+              className="clickme-close"
+            >
+              ×
+            </button>
+            <img src="/layout.jpg" alt="Layout" className="clickme-image" />
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }

@@ -10,7 +10,7 @@ export const venueToNode: Record<string, string> = {
   "LO2": "44",
   "ADMT Studio": "32",
   "Maker Lab": "29",
-  "Physics Lab 2": "32",
+  "Physics Lab 2": "101",
   "Chem Lab 2": "12",
   "Biotech Lab 1": "10",
   "Engineering Lab": "33",
@@ -19,6 +19,7 @@ export const venueToNode: Record<string, string> = {
   "SST Inc": "46",
   "Robotics Room": "43",
   "MPR3": "45",
+  "Outside ICT Helpdesk": "21"
 };
 
 // Reverse mapping: node ID -> venue name
