@@ -8,62 +8,55 @@
   },
   {
     "id": 2,
-    "time": "0930",
-    "event": "Academic Panel",
+    "time": "0915",
+    "event": "Panel Session 1: Academic Panel",
     "venue": "Auditorium",
     "eventId": ""
   },
   {
     "id": 3,
-    "time": "0945",
-    "event": "Student Life Panel",
-    "venue": "Learning Oasis 2",
+    "time": "0930",
+    "event": "Performance by SST Dance Crew & Show Choir",
+    "venue": "Atrium",
     "eventId": ""
   },
   {
     "id": 4,
-    "time": "1000",
-    "event": "PforSSTPanel: Transition from Primary to Secondary Education",
-    "venue": "Learning Oasis 1",
+    "time": "1030",
+    "event": "Panel Session 2: Student Life Panel",
+    "venue": "LO2",
     "eventId": ""
   },
   {
     "id": 5,
     "time": "1030",
-    "event": "Performance by SST Dance Crew",
-    "venue": "Atrium",
+    "event": "Panel Session 2: PforSST Panel",
+    "venue": "LO1",
     "eventId": ""
   },
   {
     "id": 6,
     "time": "1045",
-    "event": "Student Life Panel",
-    "venue": "Learning Oasis 2",
+    "event": "Performance by SST Dance Crew & Show Choir",
+    "venue": "Atrium",
     "eventId": ""
   },
   {
     "id": 7,
-    "time": "1130",
-    "event": "Academic Panel",
+    "time": "1200",
+    "event": "Panel Session 3: Academic Panel",
     "venue": "Auditorium",
     "eventId": ""
   },
   {
     "id": 8,
-    "time": "1130",
-    "event": "Performance by SST Show Choir",
+    "time": "1200",
+    "event": "Performance by SST Dance Crew & Show Choir",
     "venue": "Atrium",
     "eventId": ""
   },
   {
     "id": 9,
-    "time": "1200",
-    "event": "PforSSTPanel: Transition from Primary to Secondary Education",
-    "venue": "Learning Oasis 1",
-    "eventId": ""
-  },
-  {
-    "id": 10,
     "time": "1300",
     "event": "Open House ends",
     "venue": "",
